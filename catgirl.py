@@ -46,7 +46,7 @@ async def connected():
             cfg.config.read(f'config/bot/settings.ini')
 
             # if config for guild not existing, create
-            if not guild.id in cfg.config.sections():
+            if not str(guild.id) in cfg.config.sections():
                 print(f'Config does not exist for guild {guild.id}, creating')
                 cfg.config[guild.id] = {
                     'filterRole' : '1', # so none, but store an int

@@ -28,6 +28,7 @@ class Moderation(commands.Cog):
                 print(f'Failed to kick member {mem.name}')
         
         await ctx.send(f'Members kicked', delete_after=5)
+        print(f'{len(members)} members kicked from {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='ban')
@@ -49,6 +50,7 @@ class Moderation(commands.Cog):
                 print(f'Failed to ban member {mem.name}')
 
         await ctx.send(f'Members banned', delete_after=5)
+        print(f'{len(members)} members banned from {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='warn')
@@ -66,9 +68,10 @@ class Moderation(commands.Cog):
             try:
                 await mem.send(f'You have been warned from the moderators of {ctx.guild.name} for reason: {reason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
             except:
-             print(f'Failed to warn member {mem.name}')
+                print(f'Failed to warn member {mem.name}')
 
         await ctx.send(f'Members warned', delete_after=5)
+        print(f'{len(members)} members warned in {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     
@@ -83,6 +86,7 @@ class Moderation(commands.Cog):
             return
         messages = await ctx.channel.purge(limit=int(num))
         await ctx.send(f'Deleted {len(messages)} message(s)', delete_after=5)
+        print(f'{len(messages)} messages purged from {ctx.message.channel.name} in {ctx.guild.id} ({ctx.guild.name})')
 
 
 # add cog
