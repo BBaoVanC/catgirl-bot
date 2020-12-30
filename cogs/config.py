@@ -9,20 +9,20 @@ class Config(commands.Cog):
         print('Cog "Config" loaded')
 
     # set prefix
-    @commands.command(name='setprefix')
+    @commands.command(name='prefix')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
     async def set_prefix(self, ctx, *, prefix=None):
         """Set the prefix for all commands"""
 
-        if not prefix or not isinstance(prefix, str):
-            await ctx.send(f"Usage: setprefix prefix", delete_after=5)
+        if not prefix:
+            await ctx.send(f"Usage: prefix prefix", delete_after=5)
             return
 
-        cfg.config[f'ctx.guild.name']['prefix'] = prefix
+        cfg.config[f'{ctx.guild.name}']['prefix'] = prefix
 
         try:
-            file = open('config/bot/settings.ini', 'w')
+            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             
@@ -40,7 +40,7 @@ class Config(commands.Cog):
     async def set_prefix(self, ctx, *, role_id=None):
         """Set the role for moderators"""
 
-        if not role_id or not isinstance(role_id, int):
+        if not role_id:
             await ctx.send(f"Usage: modrole role_id", delete_after=5)
             return
         
@@ -48,10 +48,10 @@ class Config(commands.Cog):
             ctx.send(f"Role with that ID could not be found", delete_after=5)
             return
 
-        cfg.config[f'ctx.guild.name']['modrole'] = role_id
+        cfg.config[f'{ctx.guild.name}']['modrole'] = role_id
 
         try:
-            file = open('config/bot/settings.ini', 'w')
+            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             

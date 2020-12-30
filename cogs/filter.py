@@ -58,7 +58,7 @@ async def checkMessage(guild, message):
 
         # enumerate through
         # json load to make it a list
-        for word in json.loads(cfg.config[f'ctx.guild.name']['filter']):
+        for word in json.loads(cfg.config[f'{ctx.guild.name}']['filter']):
             if word in words:
                 await message.channel.send(content=f'{message.author.mention}, that word is not allowed here!', delete_after=10)
                 try:
@@ -89,7 +89,7 @@ class Filter(commands.Cog):
             await ctx.send(f'Usage: filter add/remove word', delete_after=5)
             return
     
-        filter = json.loads(cfg.config[f'ctx.guild.name']['filter'])
+        filter = json.loads(cfg.config[f'{ctx.guild.name}']['filter'])
         words = input.split()
         del words[0] # delete the first term, the "operand"
 
@@ -104,10 +104,10 @@ class Filter(commands.Cog):
             return
 
         # save the file, convert the ' to " first, since json dies
-        cfg.config[f'ctx.guild.name']['filter'] = f'{filter}'.replace('\'','"')
+        cfg.config[f'{ctx.guild.name}']['filter'] = f'{filter}'.replace('\'','"')
 
         try:
-            file = open('config/bot/settings.ini', 'w')
+            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             if(args[0] == 'add'):
@@ -132,9 +132,9 @@ class Filter(commands.Cog):
         try:
             role = ctx.guild.get_role(int(role_id))
             # save file
-            cfg.config[f'ctx.guild.name']['filterrole'] = role_id
+            cfg.config[f'{ctx.guild.name}']['filterrole'] = role_id
             try:
-                file = open('config/bot/settings.ini', 'w')
+                file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
                 cfg.config.write(file)
                 file.close()
             except:
