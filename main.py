@@ -2,21 +2,16 @@
 
 import os
 import discord
-from dotenv import load_dotenv
 from datetime import datetime
 
 # setup actual bot
 intents = discord.Intents.all()
 bot = discord.Client(intents=intents)
 
-# globals and env
-# you will need to set this in your .env file
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-
 # import funcs
 import cfg
 import handlers
+import custom
 
 # core
 class BotClient(discord.Client):
@@ -81,4 +76,4 @@ class BotClient(discord.Client):
         else:
             await handlers.checkMessage(guild, message)
 
-bot.run(TOKEN)
+bot.run(custom.TOKEN)
