@@ -65,11 +65,11 @@ async def connected():
             # create
             print(f'Main config file does not exist, creating')
             cfg.config[guild.name] = {
-                'filterRole' : '',
+                'filterRole' : '1',
                 'filter' : [],
                 'prefix' : '?',
                 'loggingEnabled' : 'yes',
-                'modrole' : ''
+                'modrole' : '1'
             }
 
             if not os.path.exists('config'):
