@@ -107,7 +107,7 @@ class Base(commands.Cog):
         embed.set_author(name='Catgirl Bot',
                          url='https://github.com/Burrit0z/',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
-        embed.set_image(url='https://github.com/Burrit0z/catgirl-bot/blob/master/catgirl.png')
+        embed.set_image(url='https://raw.githubusercontent.com/Burrit0z/catgirl-bot/master/catgirl.png')
         await ctx.send(content=f'**UwU, here is the invite link:\n{url}**', embed=embed)
 
 # add cog
