@@ -1,6 +1,18 @@
-import discord, cfg, os
+import discord, cfg, os, sys, time
 from discord.ext import commands
 from dotenv import load_dotenv
+
+# start a stopwatch of sorts
+boot_time = time.time()
+
+# function to format time of seconds into a readable format
+def format_time(seconds) -> str:
+    minutes = seconds // 60 # integer division or whatever its called
+    seconds = seconds % 60 # modulous obv
+    hours = minutes // 60
+    minutes = minutes % 60
+    
+    return(f'{int(hours)} hours {int(minutes)} minutes {int(seconds)} seconds')
 
 class Base(commands.Cog):
     """Base"""
@@ -87,11 +99,11 @@ class Base(commands.Cog):
 
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name='Catgirl Bot',
-                         url='https://github.com/Burrit0z/',
+                         url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
-        embed.add_field(name="Display Name", value=user.display_name)
-        embed.add_field(name="ID", value=user.id)
-        embed.add_field(name="Created", value=user.created_at)
+        embed.add_field(name="Display Name", value=user.display_name, inline=False)
+        embed.add_field(name="ID", value=user.id, inline=False)
+        embed.add_field(name="Created", value=user.created_at, inline=False)
         embed.set_thumbnail(url=user.avatar_url)
 
         await ctx.send(content=f'**User info for "{user.name}"**', embed=embed)
@@ -105,10 +117,24 @@ class Base(commands.Cog):
 
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name='Catgirl Bot',
-                         url='https://github.com/Burrit0z/',
+                         url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.set_image(url='https://raw.githubusercontent.com/Burrit0z/catgirl-bot/master/catgirl.png')
         await ctx.send(content=f'**UwU, here is the invite link:\n{url}**', embed=embed)
+
+    # system info
+    @commands.command(name='sysinfo', aliases=['stats'])
+    async def send_stats(self, ctx):
+        """Sends system info!"""
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_author(name='Catgirl Bot - System info',
+                         url='https://github.com/Burrit0z/catgirl-bot',
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
+        embed.add_field(name="Python version", value=sys.version, inline=False)
+        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
+
+        await ctx.send(content=f'UwU here you go', embed=embed)
 
 # add cog
 def setup(bot):
