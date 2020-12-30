@@ -6,7 +6,7 @@ class Base(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print("Cog Base loaded")
+        print('Cog "Base" loaded')
 
     @commands.command(name='say', aliases=['copy', 'mimic'])
     async def say_command(self, ctx, *, our_input: str):
@@ -57,7 +57,8 @@ class Base(commands.Cog):
                 user = await cfg.bot.fetch_user(int(tag))
                 url = user.avatar_url
             except:
-                ctx.send(f"Failed to get user avatar, did you provide a valid ID?", delete_after=5)
+                await ctx.send(f"Failed to get user avatar, did you provide a valid ID?", delete_after=5)
+                return
         else:
             url = ctx.message.author.avatar_url
 
@@ -66,7 +67,7 @@ class Base(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    # get avatar
+    # get user info
     @commands.command(name='userinfo', aliases=['info', 'user'])
     async def get_userinfo(self, ctx, *, tag=None):
         """Get user info, by mention or ID"""
@@ -77,7 +78,8 @@ class Base(commands.Cog):
             try:
                 user = await cfg.bot.fetch_user(int(tag))
             except:
-                ctx.send(f"Failed to get user, did you provide a valid ID?", delete_after=5)
+                await ctx.send(f"Failed to get user, did you provide a valid ID?", delete_after=5)
+                return
         else:
             user = ctx.message.author
 

@@ -11,7 +11,8 @@ load_dotenv()
 cogs = [
     'cogs.basic',
     'cogs.filter',
-    'cogs.mod'
+    'cogs.mod',
+    'cogs.config'
 ]
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
@@ -38,7 +39,8 @@ async def on_ready():
             'filterRole' : '',
             'filter' : [],
             'prefix' : '?',
-            'loggingEnabled' : 'yes'
+            'loggingEnabled' : 'yes',
+            'modrole' : ''
         }
         os.mkdir('config')
         os.mkdir('config/bot')

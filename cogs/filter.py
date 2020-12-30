@@ -71,9 +71,11 @@ class Filter(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print("Cog Filter loaded")
+        print('Cog "Filter" loaded')
 
     @commands.command(name='filter')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def filter_command(self, ctx, *, input=None):
         """Adjust filtered words"""
 
@@ -118,6 +120,8 @@ class Filter(commands.Cog):
             await ctx.send(f'Command failed to execute', delete_after=5)
 
     @commands.command(name='filterrole')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def set_role(self, ctx, *, role_id=None):
         """Set no filter role"""
 

@@ -1,5 +1,5 @@
 # catgirl
-A random bot I made in 2 seconds for my server because I was bored
+A discord bot
 
 Code is bad, that is to be expected. I will eventually fix it. This is my first day of python in 4 years, and my first time ever using python 3
 

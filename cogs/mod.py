@@ -7,9 +7,11 @@ class Moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print("Cog Moderation loaded")
+        print('Cog "Moderation" loaded')
 
     @commands.command(name='kick')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def kick(self, ctx, *, reason="No reason"):
         """Kick all mentioned members"""
 
@@ -29,6 +31,8 @@ class Moderation(commands.Cog):
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='ban')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def ban(self, ctx, *, reason="No reason"):
         """Ban all mentioned members"""
 
@@ -48,6 +52,8 @@ class Moderation(commands.Cog):
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='warn')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def warn(self, ctx, *, reason="No reason"):
         """Warn all mentioned members"""
 
@@ -67,6 +73,8 @@ class Moderation(commands.Cog):
 
     
     @commands.command(name='purge')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
     async def purge(self, ctx, *, num=None):
         """Purge a certain number of messages"""
     
