@@ -13,17 +13,14 @@ def get_prefix(bot, message):
 
     prefixes = ['?']
 
-    # no dm
-    if not message.guild:
-        return '?'
-
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
 
 # cog list
-initial_extensions = [
+cogs = [
     'cogs.basic',
-    'cogs.filter'
+    'cogs.filter',
+    'cogs.mod'
 ]
 
 
@@ -33,8 +30,12 @@ bot = commands.Bot(command_prefix=get_prefix, description='catgirl bot', intents
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
 if __name__ == '__main__':
-    for extension in initial_extensions:
+    print(f'Loading {len(cogs)} cogs!')
+
+    for extension in cogs:
         bot.load_extension(extension)
+    
+    print('') # newline
 
 @bot.event
 async def on_ready():
@@ -72,7 +73,9 @@ async def on_ready():
     f = open(f'logs/startup/startup.log', 'a')
     f.write(f'{str(datetime.now())} {bot.user} is now online in {len(bot.guilds)} guilds!\n')
     f.close
+
     print(f'Successfully logged in and booted...!')
+    print('') # newline
 
 
 bot.run(os.getenv('DISCORD_TOKEN'), bot=True, reconnect=True)

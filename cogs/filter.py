@@ -66,15 +66,20 @@ async def checkMessage(guild, message):
                 except:
                     print('Failed to delete message.')
 
-class FilterCog(commands.Cog): 
-    """FilterCog"""
+class Filter(commands.Cog): 
+    """Filter"""
 
     def __init__(self, bot):
         self.bot = bot
+        print("Cog Filter loaded")
 
     @commands.command(name='filter')
     async def filter_command(self, ctx, *, input=None):
         """Adjust filtered words"""
+
+        if not input:
+            await ctx.send(f'Usage: filter add/remove word', delete_after=5)
+            return
 
         args = input.split()
 
@@ -159,4 +164,4 @@ class FilterCog(commands.Cog):
 
 # add cog
 def setup(bot):
-    bot.add_cog(FilterCog(bot))
+    bot.add_cog(Filter(bot))
