@@ -42,6 +42,7 @@ class Base(commands.Cog):
     # link source code (that's this!!!)
     @commands.command(name='github', aliases=['source', 'sourcecode'])
     async def link_github(self, ctx):
+        '''The link to the source code OwO'''
         embed = discord.Embed(title='Source code',
                               description='The source code of this bot',
                               colour=0xFB98FB,
@@ -56,7 +57,7 @@ class Base(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
-        print(f'{user.name}-{user.id} was banned from {guild.name}-{guild.id}')
+        print(f'{user.name} - {user.id} was banned from {guild.name} - {guild.id}')
     
 
     # get avatar

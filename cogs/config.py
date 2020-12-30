@@ -19,7 +19,7 @@ class Config(commands.Cog):
             await ctx.send(f"Usage: prefix prefix", delete_after=5)
             return
 
-        cfg.config[f'{ctx.guild.name}']['prefix'] = prefix
+        cfg.config[f'{ctx.guild.id}']['prefix'] = prefix
 
         try:
             file = open(f'config/bot/settings.ini', 'w')
@@ -27,7 +27,7 @@ class Config(commands.Cog):
             file.close()
             
             await ctx.send(f'Prefix changed to "{prefix}')
-            printd(f'Prefix changed to "{prefix}')
+            print(f'Prefix changed to "{prefix}"')
             await ctx.message.add_reaction('✅')
         except:
             await ctx.send(f'Command failed to execute', delete_after=5)
@@ -37,7 +37,7 @@ class Config(commands.Cog):
     @commands.command(name='modrole')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def set_prefix(self, ctx, *, role_id=None):
+    async def set_modrole(self, ctx, *, role_id=None):
         """Set the role for moderators"""
 
         if not role_id:
@@ -48,7 +48,7 @@ class Config(commands.Cog):
             ctx.send(f"Role with that ID could not be found", delete_after=5)
             return
 
-        cfg.config[f'{ctx.guild.name}']['modrole'] = role_id
+        cfg.config[f'{ctx.guild.id}']['modrole'] = role_id
 
         try:
             file = open(f'config/bot/settings.ini', 'w')

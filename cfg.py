@@ -3,14 +3,15 @@ import discord
 from discord.ext import commands
 from discord import Intents
 
-def get_prefix(bot, message):
-
-    prefixes = ['?']
-
-    return commands.when_mentioned_or(*prefixes)(bot, message)
-
 # config
 config = configparser.ConfigParser()
+
+def get_prefix(bot, message):
+
+    guild_prefix = config[message.channel.guild.id]['prefix']
+    prefixes = [str(guild_prefix)]
+
+    return commands.when_mentioned_or(*prefixes)(bot, message)
 
 # setup actual bot
 intents = discord.Intents.all()
@@ -21,7 +22,7 @@ async def hasperms(ctx):
     has_mod = False
 
     for role in user.roles:
-        if int(role.id) == int(config[ctx.guild.name]['modrole']):
+        if int(role.id) == int(config[ctx.guild.id]['modrole']):
             has_mod = True
 
     ret = user.guild_permissions.administrator or has_mod
