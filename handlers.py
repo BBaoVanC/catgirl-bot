@@ -1,13 +1,7 @@
 import cfg
 
 import os
-import discord
-import configparser
 import json
-from dotenv import load_dotenv
-from discord.ext import commands
-from discord.emoji import Emoji
-from discord import Intents
 from datetime import datetime
 
 import cmd

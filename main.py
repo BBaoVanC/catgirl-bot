@@ -1,12 +1,7 @@
 # main.py
 import os
 import discord
-import configparser
-import json
 from dotenv import load_dotenv
-from discord.ext import commands
-from discord.emoji import Emoji
-from discord import Intents
 from datetime import datetime
 
 # setup actual bot
@@ -20,7 +15,6 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 # import funcs
 import cfg
-import cmd
 import handlers
 
 # core
