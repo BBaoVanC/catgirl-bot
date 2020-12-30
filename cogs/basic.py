@@ -66,6 +66,32 @@ class Base(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    # get avatar
+    @commands.command(name='userinfo', aliases=['info', 'user'])
+    async def get_userinfo(self, ctx, *, tag=None):
+        """Get user info, by mention or ID"""
+
+        if ctx.message.mentions:
+            user = ctx.message.mentions[0]
+        elif tag:
+            try:
+                user = await cfg.bot.fetch_user(int(tag))
+            except:
+                ctx.send(f"Failed to get user, did you provide a valid ID?", delete_after=5)
+        else:
+            user = ctx.message.author
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_author(name='Catgirl Bot',
+                         url='https://github.com/Burrit0z/',
+                         icon_url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4')
+        embed.add_field(name="Display Name", value=user.display_name)
+        embed.add_field(name="ID", value=user.id)
+        embed.add_field(name="Created", value=user.created_at)
+        embed.set_thumbnail(url=user.avatar_url)
+
+        await ctx.send(content=f'**User info for "{user.name}"**', embed=embed)
+
 # add cog
 def setup(bot):
     bot.add_cog(Base(bot))
