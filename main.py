@@ -5,11 +5,9 @@ import discord
 from datetime import datetime
 
 # setup actual bot
-intents = discord.Intents.all()
-bot = discord.Client(intents=intents)
+bot = discord.Client()
 
 # import funcs
-import cfg
 import handlers
 import custom
 
@@ -21,24 +19,6 @@ class BotClient(discord.Client):
     async def on_ready():
         print(f'{bot.user} has connected to Discord!')
         await bot.change_presence(activity=discord.Game(name='with catgirls'))
-
-        # setup and load config
-        if(os.path.exists('config/bot/settings')):
-            print('Config file exists, reading')
-            cfg.config.read('config/bot/settings')
-        else:
-            print('Config does not exist, creating')
-            cfg.config['SERVER'] = {
-                'filterRole' : '',
-                'filter' : [],
-                'prefix' : '?',
-                'loggingEnabled' : 'yes'
-            }
-            os.mkdir('config')
-            os.mkdir('config/bot')
-            with open('config/bot/settings', 'w') as file:
-                cfg.config.write(file)
-
 
         # log folder
         if(os.path.exists('logs')):
@@ -71,7 +51,7 @@ class BotClient(discord.Client):
         if message.author == bot.user:
             return
 
-        if(message.content.startswith(cfg.config['SERVER']['prefix'])):
+        if message.content.startswith(custom.PREFIX):
             await handlers.checkCommands(guild, message)
         else:
             await handlers.checkMessage(guild, message)

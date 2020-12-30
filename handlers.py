@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 
 import cmd
-import cfg
+import custom
 
 # define message check function
 # checks against filter and some other things
@@ -31,14 +31,13 @@ async def checkMessage(guild, message):
     else:
         # exempt users with no filter role
         try:
-            if guild.get_role(cfg.config.getint('SERVER', 'filterrole')) in message.author.roles:
+            if guild.get_role(custom.FILTER_ROLE) in message.author.roles:
                 return
         except:
             print('No filter role is not set!')
 
-        # enumerate through
-        # json load to make it a list
-        for word in json.loads(cfg.config['SERVER']['filter']):
+        # loop through
+        for word in custom.FILTER:
             if word in words:
                 await message.channel.send(content=f'{message.author.mention}, that word is not allowed here!', delete_after=10)
                 try:
@@ -51,7 +50,7 @@ async def checkCommands(guild, message):
     
     # split into args
     args = message.content.lower().split()
-    prefix = cfg.config['SERVER']['prefix']
+    prefix = custom.PREFIX
 
     # LMAO. You can't have on_message and command listener :nfr:
 
@@ -106,7 +105,7 @@ async def logMessage(message):
     # write message to a file if the option is on
     enabled = True
     try:
-        enabled = cfg.config.getboolean('SERVER', 'loggingEnabled')
+        enabled = custom.LOGGING
     except:
         print('Could not convert the value of "loggingEnabled" to a boolean, defaulting to True')
 
