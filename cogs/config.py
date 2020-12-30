@@ -19,7 +19,7 @@ class Config(commands.Cog):
             await ctx.send(f"Usage: setprefix prefix", delete_after=5)
             return
 
-        cfg.config['SERVER']['prefix'] = prefix
+        cfg.config[f'ctx.guild.name']['prefix'] = prefix
 
         try:
             file = open('config/bot/settings.ini', 'w')
@@ -48,7 +48,7 @@ class Config(commands.Cog):
             ctx.send(f"Role with that ID could not be found", delete_after=5)
             return
 
-        cfg.config['SERVER']['modrole'] = role_id
+        cfg.config[f'ctx.guild.name']['modrole'] = role_id
 
         try:
             file = open('config/bot/settings.ini', 'w')

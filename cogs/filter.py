@@ -8,22 +8,22 @@ async def logMessage(message):
     # write message to a file if the option is on
     enabled = True
     try:
-        enabled = cfg.config.getboolean('SERVER', 'loggingEnabled')
+        enabled = cfg.config.getboolean(f'ctx.guild.name', 'loggingEnabled')
     except:
         print('Could not convert the value of "loggingEnabled" to a boolean, defaulting to True')
 
     if enabled:
         try:
             # mkdir for guild if it doesnt exist
-            if(os.path.exists(f'logs/messages/{message.channel.guild.name}') == False):
-                os.mkdir(f'logs/messages/{message.channel.guild.name}')
+            if(os.path.exists(f'logs/guilds/{guild.name}/{message.channel.guild.name}') == False):
+                os.mkdir(f'logs/guilds/{guild.name}/{message.channel.guild.name}')
 
             # open file and write 
-            f = open(f'logs/messages/{message.channel.guild.name}/{message.channel.name}.log', 'a')
+            f = open(f'logs/guilds/{guild.name}/{message.channel.guild.name}/{message.channel.name}.log', 'a')
             f.write(f'\n{str(datetime.now())} {message.author.display_name}({message.author.name}): {message.content}\n')
             f.close
         except:
-            f = open(f'logs/{message.channel.name}.log', 'a')
+            f = open(f'logs/guilds/{message.channel.name}.log', 'a')
             f.write(f'\n{str(datetime.now())} {message.author.display_name}({message.author.name}): Unable to log contents, exception occured\n')
             f.close
 
@@ -51,14 +51,14 @@ async def checkMessage(guild, message):
     else:
         # exempt users with no filter role
         try:
-            if guild.get_role(cfg.config.getint('SERVER', 'filterrole')) in message.author.roles:
+            if guild.get_role(cfg.config.getint(f'ctx.guild.name', 'filterrole')) in message.author.roles:
                 return
         except:
             print('No filter role is not set!')
 
         # enumerate through
         # json load to make it a list
-        for word in json.loads(cfg.config['SERVER']['filter']):
+        for word in json.loads(cfg.config[f'ctx.guild.name']['filter']):
             if word in words:
                 await message.channel.send(content=f'{message.author.mention}, that word is not allowed here!', delete_after=10)
                 try:
@@ -89,7 +89,7 @@ class Filter(commands.Cog):
             await ctx.send(f'Usage: filter add/remove word', delete_after=5)
             return
     
-        filter = json.loads(cfg.config['SERVER']['filter'])
+        filter = json.loads(cfg.config[f'ctx.guild.name']['filter'])
         words = input.split()
         del words[0] # delete the first term, the "operand"
 
@@ -104,7 +104,7 @@ class Filter(commands.Cog):
             return
 
         # save the file, convert the ' to " first, since json dies
-        cfg.config['SERVER']['filter'] = f'{filter}'.replace('\'','"')
+        cfg.config[f'ctx.guild.name']['filter'] = f'{filter}'.replace('\'','"')
 
         try:
             file = open('config/bot/settings.ini', 'w')
@@ -132,7 +132,7 @@ class Filter(commands.Cog):
         try:
             role = ctx.guild.get_role(int(role_id))
             # save file
-            cfg.config['SERVER']['filterrole'] = role_id
+            cfg.config[f'ctx.guild.name']['filterrole'] = role_id
             try:
                 file = open('config/bot/settings.ini', 'w')
                 cfg.config.write(file)

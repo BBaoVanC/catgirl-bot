@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix=get_prefix, description='catgirl bot', intents
 async def hasperms(ctx):
     try:
         user = ctx.message.author
-        ret = user.guild_permissions.administrator or config['SERVER']['modrole'] in user.roles
+        ret = user.guild_permissions.administrator or config[f'ctx.guild.name']['modrole'] in user.roles
         if not ret:
             await ctx.send(f'{user.mention}, you do not have permission to use this command! OwO')
         return ret
