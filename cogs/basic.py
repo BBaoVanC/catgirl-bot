@@ -1,4 +1,4 @@
-import discord
+import discord, cfg
 from discord.ext import commands
 
 class Base(commands.Cog):
@@ -25,9 +25,46 @@ class Base(commands.Cog):
 
         await ctx.send(f'Hello master! UwU')
 
+    # link source code (that's this!!!)
+    @commands.command(name='github', aliases=['source', 'sourcecode'])
+    async def link_github(self, ctx):
+        embed = discord.Embed(title='Source code',
+                              description='The source code of this bot',
+                              colour=0xFB98FB,
+                              url='https://github.com/Burrit0z/catgirl-bot')
+        embed.set_author(name='Catgirl Bot',
+                         url='https://github.com/Burrit0z/',
+                         icon_url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4')
+        embed.set_image(url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4g')
+        embed.set_footer(text='Made in Python with discord.py@rewrite', icon_url='http://i.imgur.com/5BFecvA.png')
+
+        await ctx.send(content='**Catgirl bot source code UwU**', embed=embed)
+
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
         print(f'{user.name}-{user.id} was banned from {guild.name}-{guild.id}')
+    
+
+    # get avatar
+    @commands.command(name='avatar', aliases=['pfp'])
+    async def get_avatar(self, ctx, *, tag=None):
+        """Gets the avatar of a user, by mention or ID"""
+
+        if ctx.message.mentions:
+            url = ctx.message.mentions[0].avatar_url
+        elif tag:
+            try:
+                user = await cfg.bot.fetch_user(int(tag))
+                url = user.avatar_url
+            except:
+                ctx.send(f"Failed to get user avatar, did you provide a valid ID?", delete_after=5)
+        else:
+            url = ctx.message.author.avatar_url
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_image(url=url)
+
+        await ctx.send(embed=embed)
 
 # add cog
 def setup(bot):

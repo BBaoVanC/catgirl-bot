@@ -1,6 +1,4 @@
 import discord
-from discord.ext import commands
-from discord import Intents
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -9,13 +7,6 @@ import cfg
 
 load_dotenv()
 
-def get_prefix(bot, message):
-
-    prefixes = ['?']
-
-    return commands.when_mentioned_or(*prefixes)(bot, message)
-
-
 # cog list
 cogs = [
     'cogs.basic',
@@ -23,24 +14,19 @@ cogs = [
     'cogs.mod'
 ]
 
-
-# setup actual bot
-intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=get_prefix, description='catgirl bot', intents=intents)
-
 # Here we load our extensions(cogs) listed above in [initial_extensions].
 if __name__ == '__main__':
     print(f'Loading {len(cogs)} cogs!')
 
     for extension in cogs:
-        bot.load_extension(extension)
+        cfg.bot.load_extension(extension)
     
     print('') # newline
 
-@bot.event
+@cfg.bot.event
 async def on_ready():
-    print(f'{bot.user} has connected to Discord!')
-    await bot.change_presence(activity=discord.Game(name='with catgirls'))
+    print(f'{cfg.bot.user} has connected to Discord!')
+    await cfg.bot.change_presence(activity=discord.Game(name='with catgirls'))
 
     # setup and load config
     if(os.path.exists('config/bot/settings.ini')):
@@ -71,11 +57,11 @@ async def on_ready():
 
     # log startup
     f = open(f'logs/startup/startup.log', 'a')
-    f.write(f'{str(datetime.now())} {bot.user} is now online in {len(bot.guilds)} guilds!\n')
+    f.write(f'{str(datetime.now())} {cfg.bot.user} is now online in {len(cfg.bot.guilds)} guilds!\n')
     f.close
 
-    print(f'Successfully logged in and booted...!')
+    print(f'Successfully logged in and booted!')
     print('') # newline
 
 
-bot.run(os.getenv('DISCORD_TOKEN'), bot=True, reconnect=True)
+cfg.bot.run(os.getenv('DISCORD_TOKEN'), bot=True, reconnect=True)
