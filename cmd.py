@@ -1,6 +1,9 @@
-import cfg
+#!/usr/bin/env python3
 
 import json
+
+import cfg
+
 
 # commands
 async def kick(guild, message, args):

@@ -1,10 +1,11 @@
-import cfg
+#!/usr/bin/env python3
 
 import os
 import json
 from datetime import datetime
 
 import cmd
+import cfg
 
 # define message check function
 # checks against filter and some other things
