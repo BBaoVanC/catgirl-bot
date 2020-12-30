@@ -41,11 +41,29 @@ async def connected():
         if guild.name == None:
             return
 
-        if os.path.exists(f'config/{guild.name}/settings.ini'):
-            print('Config file exists, reading')
-            cfg.config.read(f'config/{guild.name}/settings.ini')
+        # does file exist?
+        if os.path.exists(f'config/bot/settings.ini'):
+            cfg.config.read(f'config/bot/settings.ini')
+
+            # if config for guild not existing, create
+            if not guild.name in cfg.config.sections():
+                print(f'Config does not exist for guild {guild.name}, creating')
+                cfg.config[guild.name] = {
+                    'filterRole' : '1', # so none, but store an int
+                    'filter' : [],
+                    'prefix' : '?',
+                    'loggingEnabled' : 'yes',
+                    'modrole' : '1' # same here
+                }
+
+                # write changes
+                with open(f'config/bot/settings.ini', 'w') as file:
+                    cfg.config.write(file)
+            else:
+                print(f'Config exists for guild {guild.name}')
         else:
-            print('Config does not exist, creating')
+            # create
+            print(f'Main config file does not exist, creating')
             cfg.config[guild.name] = {
                 'filterRole' : '',
                 'filter' : [],
@@ -57,10 +75,11 @@ async def connected():
             if not os.path.exists('config'):
                 os.mkdir('config')
 
-            os.mkdir(f'config/{guild.name}')
-            with open(f'config/{guild.name}/settings.ini', 'w') as file:
+            os.mkdir(f'config/bot')
+            with open(f'config/bot/settings.ini', 'w') as file:
                 cfg.config.write(file)
-            
+        
+        # make logs for each guild
         if not os.path.exists(f'logs/guilds/{guild.name}'):
             os.mkdir(f'logs/guilds/{guild.name}')
 

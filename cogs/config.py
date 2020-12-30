@@ -22,7 +22,7 @@ class Config(commands.Cog):
         cfg.config[f'{ctx.guild.name}']['prefix'] = prefix
 
         try:
-            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
+            file = open(f'config/bot/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             
@@ -51,7 +51,7 @@ class Config(commands.Cog):
         cfg.config[f'{ctx.guild.name}']['modrole'] = role_id
 
         try:
-            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
+            file = open(f'config/bot/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             

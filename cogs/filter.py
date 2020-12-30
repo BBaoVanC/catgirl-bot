@@ -107,7 +107,7 @@ class Filter(commands.Cog):
         cfg.config[f'{ctx.guild.name}']['filter'] = f'{filter}'.replace('\'','"')
 
         try:
-            file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
+            file = open(f'config/bot/settings.ini', 'w')
             cfg.config.write(file)
             file.close()
             if(args[0] == 'add'):
@@ -134,7 +134,7 @@ class Filter(commands.Cog):
             # save file
             cfg.config[f'{ctx.guild.name}']['filterrole'] = role_id
             try:
-                file = open(f'config/{ctx.guild.name}/settings.ini', 'w')
+                file = open(f'config/bot/settings.ini', 'w')
                 cfg.config.write(file)
                 file.close()
             except:

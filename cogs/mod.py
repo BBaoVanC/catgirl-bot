@@ -37,7 +37,7 @@ class Moderation(commands.Cog):
         """Ban all mentioned members"""
 
         if not ctx.message.mentions:
-            await ctx.send(f'Usage: kick user reason (optional)', delete_after=5)
+            await ctx.send(f'Usage: ban user reason (optional)', delete_after=5)
             return
 
         members = ctx.message.mentions
@@ -58,7 +58,7 @@ class Moderation(commands.Cog):
         """Warn all mentioned members"""
 
         if not ctx.message.mentions:
-            await ctx.send(f'Usage: kick user reason (optional)', delete_after=5)
+            await ctx.send(f'Usage: warn user reason (optional)', delete_after=5)
             return
 
         members = ctx.message.mentions
