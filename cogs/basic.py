@@ -1,11 +1,13 @@
-import discord, cfg
+import discord, cfg, os
 from discord.ext import commands
+from dotenv import load_dotenv
 
 class Base(commands.Cog):
     """Base"""
 
     def __init__(self, bot):
         self.bot = bot
+        load_dotenv()
         print('Cog "Base" loaded')
 
     @commands.command(name='say', aliases=['copy', 'mimic'])
@@ -34,8 +36,8 @@ class Base(commands.Cog):
                               url='https://github.com/Burrit0z/catgirl-bot')
         embed.set_author(name='Catgirl Bot',
                          url='https://github.com/Burrit0z/',
-                         icon_url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4')
-        embed.set_image(url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4g')
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
+        embed.set_image(url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4g')
         embed.set_footer(text='Made in Python with discord.py@rewrite', icon_url='http://i.imgur.com/5BFecvA.png')
 
         await ctx.send(content='**Catgirl bot source code UwU**', embed=embed)
@@ -86,13 +88,27 @@ class Base(commands.Cog):
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name='Catgirl Bot',
                          url='https://github.com/Burrit0z/',
-                         icon_url='https://avatars1.githubusercontent.com/u/57574731?s=460&u=1ed4b749c9487d2f4160c7060e149172714ee18f&v=4')
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Display Name", value=user.display_name)
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Created", value=user.created_at)
         embed.set_thumbnail(url=user.avatar_url)
 
         await ctx.send(content=f'**User info for "{user.name}"**', embed=embed)
+
+
+    # invite link for the current bot
+    @commands.command(name='botinvite', aliases=['link'])
+    async def get_link(self, ctx):
+        """Get the invite link to add this bot to your server!"""
+        url = f'<https://discord.com/oauth2/authorize?client_id={os.getenv("CLIENT_ID")}&scope=bot>'
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_author(name='Catgirl Bot',
+                         url='https://github.com/Burrit0z/',
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
+        embed.set_image(url='https://github.com/Burrit0z/catgirl-bot/catgirl.png')
+        await ctx.send(content=f'**UwU, here is the invite link:\n{url}**', embed=embed)
 
 # add cog
 def setup(bot):
