@@ -14,7 +14,6 @@ async def logChatMessage(messagecontext):
 
     # write message to a file if the option is on
     enabled = await loggingEnabled(messagecontext.message)
-    message = messagecontext.message
     channel = messagecontext.channel()
     guild = messagecontext.guild()
 
