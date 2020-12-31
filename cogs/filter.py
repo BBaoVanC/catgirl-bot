@@ -1,70 +1,8 @@
 import discord, os, json
-import cfg
+import cfg, logger, filtercheck
 from discord.ext import commands
 from datetime import datetime
-
-# define log function
-async def logMessage(message):
-    # write message to a file if the option is on
-    enabled = True
-    try:
-        enabled = cfg.config.getboolean(f'ctx.guild.name', 'loggingEnabled')
-    except:
-        print('Could not convert the value of "loggingEnabled" to a boolean, defaulting to True')
-
-    if enabled:
-        try:
-            # mkdir for guild if it doesnt exist
-            if(os.path.exists(f'logs/guilds/{guild.name}/{message.channel.guild.name}') == False):
-                os.mkdir(f'logs/guilds/{guild.name}/{message.channel.guild.name}')
-
-            # open file and write 
-            f = open(f'logs/guilds/{guild.name}/{message.channel.guild.name}/{message.channel.name}.log', 'a')
-            f.write(f'\n{str(datetime.now())} {message.author.display_name}({message.author.name}): {message.content}\n')
-            f.close
-        except:
-            f = open(f'logs/guilds/{message.channel.name}.log', 'a')
-            f.write(f'\n{str(datetime.now())} {message.author.display_name}({message.author.name}): Unable to log contents, exception occured\n')
-            f.close
-
-# define message check function
-# checks against filter and some other things
-async def checkMessage(guild, message):
-
-    # split message into an array to check individual words
-    words = message.content.lower().split()
-    
-    # react
-    if 'catgirl' in words or 'neko' in words or 'sex' in words:
-        await message.add_reaction('<:wooaaahhh:789297106837569557>') #wooaaahhh
-    
-    # pedo
-    elif ('cp' in words) or ('child' in words and 'porn' in words):
-        try:
-            await message.delete()
-            await message.author.kick()
-            await message.channel.send(f'{message.author.name} has been kicked for being a literal pedo')
-        except:
-            print(f'Error kicking user {message.author.name}! Does bot have correct permissions to kick this user?')
-   
-    # check filters
-    else:
-        # exempt users with no filter role
-        try:
-            if guild.get_role(cfg.config.getint(f'ctx.guild.name', 'filterrole')) in message.author.roles:
-                return
-        except:
-            print('No filter role is not set!')
-
-        # enumerate through
-        # json load to make it a list
-        for word in json.loads(cfg.config[f'{ctx.guild.name}']['filter']):
-            if word in words:
-                await message.channel.send(content=f'{message.author.mention}, that word is not allowed here!', delete_after=10)
-                try:
-                    await message.delete()
-                except:
-                    print('Failed to delete message.')
+from context import messagecontext
 
 class Filter(commands.Cog): 
     """Filter"""
@@ -89,7 +27,7 @@ class Filter(commands.Cog):
             await ctx.send(f'Usage: filter add/remove word', delete_after=5)
             return
     
-        filter = json.loads(cfg.config[f'{ctx.guild.name}']['filter'])
+        filter = json.loads(cfg.config[f'{ctx.guild.id}']['filter'])
         words = input.split()
         del words[0] # delete the first term, the "operand"
 
@@ -104,7 +42,7 @@ class Filter(commands.Cog):
             return
 
         # save the file, convert the ' to " first, since json dies
-        cfg.config[f'{ctx.guild.name}']['filter'] = f'{filter}'.replace('\'','"')
+        cfg.config[f'{ctx.guild.id}']['filter'] = f'{filter}'.replace('\'','"')
 
         try:
             file = open(f'config/bot/settings.ini', 'w')
@@ -132,7 +70,7 @@ class Filter(commands.Cog):
         try:
             role = ctx.guild.get_role(int(role_id))
             # save file
-            cfg.config[f'{ctx.guild.name}']['filterrole'] = role_id
+            cfg.config[f'{ctx.guild.id}']['filterrole'] = role_id
             try:
                 file = open(f'config/bot/settings.ini', 'w')
                 cfg.config.write(file)
@@ -146,25 +84,29 @@ class Filter(commands.Cog):
         print(f'No filter role set to {ctx.guild.get_role(int(role_id))}')
         await ctx.send(f'No filter role set to "{ctx.guild.get_role(int(role_id))}"', delete_after=5)
         await ctx.message.add_reaction('✅')
-'''
+
     @commands.Cog.listener()
-    async def on_message(self, ctx):
-        print(type(ctx))
+    async def on_message(self, message):
+        # message context
+        context = messagecontext(message)
+
         # get guild
-        try:
-            guild = ctx.guild
-        except:
-            # not guild
-            return
+        guild = context.guild()
+        if guild:
 
-        # log message
-        await logMessage(ctx)
+            try:
+                prefix = cfg.config[str(message.channel.guild.id)]['prefix']
+            except:
+                return
+                print(f'Error handling message')
 
-        # if it is the bot, return
-        if ctx.author == bot.user:
-            return
-        
-        checkMessage(ctx.guild, ctx)'''
+            # log message
+            await logger.logChatMessage(context)
+            # if it is the bot, or command, return
+            if message.author == cfg.bot.user or message.content.startswith(prefix):
+                pass
+            else:
+                await filtercheck.checkMessage(context)
 
 # add cog
 def setup(bot):

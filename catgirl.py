@@ -1,9 +1,11 @@
-import discord
+import discord, sys
 from datetime import datetime
 from dotenv import load_dotenv
 
-import sys, traceback, os
-import cfg
+sys.path.insert(1, 'mod')
+sys.path.insert(1, 'data')
+import os
+import cfg, logger
 
 load_dotenv()
 
@@ -11,7 +13,7 @@ load_dotenv()
 cogs = [
     'cogs.basic',
     'cogs.filter',
-    'cogs.mod',
+    'cogs.moderation',
     'cogs.config'
 ]
 
@@ -47,7 +49,7 @@ async def connected():
 
             # if config for guild not existing, create
             if not str(guild.id) in cfg.config.sections():
-                print(f'Config does not exist for guild {guild.id}, creating')
+                print(f'Config does not exist for guild {guild.id} ({guild.name}), creating')
                 cfg.config[guild.id] = {
                     'filterRole' : '1', # so none, but store an int
                     'filter' : [],
@@ -60,7 +62,7 @@ async def connected():
                 with open(f'config/bot/settings.ini', 'w') as file:
                     cfg.config.write(file)
             else:
-                print(f'Config exists for guild {guild.id}')
+                print(f'Config exists for guild {guild.id} ({guild.name})')
         else:
             # create
             print(f'Main config file does not exist, creating')
@@ -96,15 +98,24 @@ async def on_ready():
     f.close
 
     print(f'Successfully logged in and booted!')
+    print(f'{cfg.bot.user} is now online in {len(cfg.bot.guilds)} guilds!')
     print(f'Bot is ready!')
     print('') # newline
 
 @cfg.bot.event
-async def on_connect():
-    print(f'Connected to discord!')
+async def on_guild_join(guild):
+    # force reload config and logs
     await connected()
-    # connected
-    print('') # newline
 
+    # log startup
+    f = open(f'logs/startup/startup.log', 'a')
+    f.write(f'{str(datetime.now())} {cfg.bot.user} joined the guild {guild.id} ({guild.name})!\n')
+    f.close
+
+    print(f'\nJoined the guild {guild.id} ({guild.name})!\n')
+
+@cfg.bot.event
+async def on_guild_remove(guild):
+    print(f'\nLeft the guild {guild.id} ({guild.name})!\n')
 
 cfg.bot.run(os.getenv('DISCORD_TOKEN'), bot=True, reconnect=True)

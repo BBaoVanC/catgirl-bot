@@ -1,18 +1,10 @@
 import discord, cfg, os, sys, time
 from discord.ext import commands
 from dotenv import load_dotenv
+from timeformat import format_time
 
 # start a stopwatch of sorts
 boot_time = time.time()
-
-# function to format time of seconds into a readable format
-def format_time(seconds) -> str:
-    minutes = seconds // 60 # integer division or whatever its called
-    seconds = seconds % 60 # modulous obv
-    hours = minutes // 60
-    minutes = minutes % 60
-    
-    return(f'{int(hours)} hours {int(minutes)} minutes {int(seconds)} seconds')
 
 class Base(commands.Cog):
     """Base"""
@@ -133,7 +125,7 @@ class Base(commands.Cog):
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Python version", value=sys.version, inline=False)
-        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
+        embed.add_field(name="Uptime", value=timeformat.format_time(time.time() - boot_time), inline=False)
 
         await ctx.send(content=f'UwU here you go', embed=embed)
 
