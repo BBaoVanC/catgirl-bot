@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import cfg
 from mod import logger, filtercheck, owouwu

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import discord, sys
 from datetime import datetime
 from dotenv import load_dotenv

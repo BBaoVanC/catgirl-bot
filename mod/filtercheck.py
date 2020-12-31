@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import cfg, json
 
 # define message check function

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import discord, cfg, os, sys, time
 from mod import owouwu
 from discord.ext import commands

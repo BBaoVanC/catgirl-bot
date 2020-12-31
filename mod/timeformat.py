@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # function to format time of seconds into a readable format
 def format_time(seconds) -> str:
     minutes = seconds // 60 # integer division or whatever its called

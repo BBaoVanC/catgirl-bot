@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import cfg
 
 async def loggingEnabled(message) -> bool:
