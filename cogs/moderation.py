@@ -36,7 +36,7 @@ class Moderation(commands.Cog):
                 except:
                     print(f'Failed to message member {mem.name}')
                     await ctx.send(f'Failed to message member {mem.name}')
-                mem.kick()
+                await mem.kick()
             except:
                 print(f'Failed to kick member {mem.name}')
                 await ctx.send(f'Failed to kick member {mem.name}')

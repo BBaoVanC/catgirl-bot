@@ -24,7 +24,7 @@ async def logChatMessage(messagecontext):
 
             # open file and write 
             f = open(f'logs/guilds/{guild.id}/{channel.name}.log', 'a')
-            f.write(messagecontext.readable_log())
+            f.write(f'{messagecontext.readable_log()}\n')
             f.close
         except:
             f = open(f'logs/guilds/{guild.id}/{channel.name}.log', 'a')
