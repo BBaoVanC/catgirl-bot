@@ -126,7 +126,7 @@ class Base(commands.Cog):
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Python version", value=sys.version, inline=False)
         embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
-        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency, 2)}ms', inline=False)
+        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=False)
 
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
@@ -139,7 +139,7 @@ class Base(commands.Cog):
         embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
-        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency, 2)}ms', inline=False)
+        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=False)
 
         await ctx.send(content=f'{owouwu.gen()} current ping', embed=embed)
 
