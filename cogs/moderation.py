@@ -1,5 +1,5 @@
-import discord
-import cfg, owouwu
+import cfg
+from mod import owouwu
 from discord.ext import commands
 
 def is_integer(str):

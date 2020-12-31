@@ -1,4 +1,3 @@
-from context import messagecontext
 import cfg, json
 
 # define message check function

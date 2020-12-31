@@ -1,8 +1,8 @@
-import discord, os, json
-import cfg, logger, filtercheck, owouwu
+import json
+import cfg
+from mod import logger, filtercheck, owouwu
 from discord.ext import commands
-from datetime import datetime
-from context import messagecontext
+from data.context import messagecontext
 
 class Filter(commands.Cog): 
     """Filter"""

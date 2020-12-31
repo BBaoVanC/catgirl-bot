@@ -1,5 +1,4 @@
-from context import messagecontext
-import os, cfg
+import cfg
 
 async def loggingEnabled(message) -> bool:
     enabled = True

@@ -1,4 +1,5 @@
-import discord, cfg, owouwu
+import cfg
+from mod import owouwu
 from discord.ext import commands
 
 class Config(commands.Cog):

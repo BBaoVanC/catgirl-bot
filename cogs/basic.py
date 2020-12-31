@@ -1,7 +1,8 @@
-import discord, cfg, os, sys, time, owouwu
+import discord, cfg, os, sys, time
+from mod import owouwu
 from discord.ext import commands
 from dotenv import load_dotenv
-from timeformat import format_time
+from mod.timeformat import format_time
 
 # start a stopwatch of sorts
 boot_time = time.time()

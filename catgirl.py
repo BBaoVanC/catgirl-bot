@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 sys.path.insert(1, 'mod')
 sys.path.insert(1, 'data')
 import os
-import cfg, logger
+import cfg
 
 load_dotenv()
 
