@@ -121,13 +121,27 @@ class Base(commands.Cog):
         """Sends system info!"""
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name='Catgirl Bot - System info',
+        embed.set_author(name=f'Catgirl Bot - System info {owouwu.gen()}',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Python version", value=sys.version, inline=False)
         embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
+        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency, 2)}ms', inline=False)
 
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
+
+     # system info
+    @commands.command(name='ping')
+    async def send_ping(self, ctx):
+        """Sends current ping!"""
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
+                         url='https://github.com/Burrit0z/catgirl-bot',
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
+        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency, 2)}ms', inline=False)
+
+        await ctx.send(content=f'{owouwu.gen()} current ping', embed=embed)
 
 # add cog
 def setup(bot):

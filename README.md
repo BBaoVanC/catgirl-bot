@@ -9,12 +9,13 @@ Code is bad, that is to be expected. I will eventually fix it. This is my first 
     - kick
     - ban
     - purge
-    - filter bypass role setup
-    - filter add/remove for blacklisted words
-    - userinfo/info/user command
-    - avatar/pfp command
-    - botinvite/link command (gets the bot invite link)
-    - set custom prefix with prefix command
+    - filterrole
+    - filter add/remove
+    - userinfo/info/user
+    - avatar/pfp
+    - botinvite/link
+    - prefix
+    - ping
 
 ## To use:
 1. Install python 3.9
