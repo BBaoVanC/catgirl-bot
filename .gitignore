@@ -154,3 +154,7 @@ dmypy.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+
+# catgirl bot
+config/bot/settings.ini
+logs/
