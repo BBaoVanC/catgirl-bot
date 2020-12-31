@@ -103,7 +103,7 @@ class Filter(commands.Cog):
             # log message
             await logger.logChatMessage(context)
             # if it is the bot, or command, return
-            if message.author == cfg.bot.user or message.content.startswith(prefix):
+            if message.author == cfg.bot.user:
                 pass
             else:
                 await filtercheck.checkMessage(context)

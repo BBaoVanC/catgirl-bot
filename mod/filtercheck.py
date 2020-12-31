@@ -8,9 +8,10 @@ async def checkMessage(messagecontext):
     # split message into an array to check individual words
     words = messagecontext.message_words()
     message = messagecontext.message
+    lowered_content = message.content.lower()
     
     # react to these terms
-    if 'catgirl' in message.content or 'neko' in message.content or 'sex' in message.content:
+    if 'catgirl' in lowered_content or 'neko' in lowered_content or 'sex' in lowered_content:
         await message.add_reaction('<:wooaaahhh:789297106837569557>') #wooaaahhh
     
     # pedo. search for individual words
@@ -29,7 +30,7 @@ async def checkMessage(messagecontext):
         if 'gn' in words:
             await message.add_reaction('<:catgn:782652492847775794>')
     
-    elif 'i love you' in message.content.lower():
+    elif 'i love you' in lowered_content:
         await message.add_reaction('<:love:794076402945228811>')
 
     # check filters
