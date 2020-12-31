@@ -9,11 +9,11 @@ async def checkMessage(messagecontext):
     words = messagecontext.message_words()
     message = messagecontext.message
     
-    # react
-    if 'catgirl' in words or 'neko' in words or 'sex' in words:
+    # react to these terms
+    if 'catgirl' in message.content or 'neko' in message.content or 'sex' in message.content:
         await message.add_reaction('<:wooaaahhh:789297106837569557>') #wooaaahhh
     
-    # pedo
+    # pedo. search for individual words
     elif ('cp' in words) or ('child' in words and 'porn' in words):
         try:
             await messagecontext.message.delete()
@@ -21,7 +21,14 @@ async def checkMessage(messagecontext):
             await messagecontext.channel().send(f'{message.author.name} has been kicked for being a literal pedo')
         except:
             print(f'Error kicking user {message.author.name} from {messagecontext.guild().name}! Does bot have correct permissions to kick this user?')
-   
+
+    # gm gn reacts
+    elif 'gm' in words or 'gn' in words:
+        if 'gm' in words:
+            await message.add_reaction('<:catgm:782652523462393918>')
+        if 'gn' in words:
+            await message.add_reaction('<:catgn:782652492847775794>')
+
     # check filters
     else:
         # exempt users with no filter role

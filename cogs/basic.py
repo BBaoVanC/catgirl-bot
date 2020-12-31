@@ -24,7 +24,7 @@ class Base(commands.Cog):
 
         await ctx.send(our_input)
 
-    @commands.command(name='hello')
+    @commands.command(name='hello', hidden=True)
     @commands.is_owner()
     async def hello_command(self, ctx):
         """UwU"""

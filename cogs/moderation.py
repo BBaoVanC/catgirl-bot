@@ -2,6 +2,13 @@ import discord
 import cfg, owouwu
 from discord.ext import commands
 
+def is_integer(str):
+    try: 
+        int(str)
+        return True
+    except:
+        return False
+
 class Moderation(commands.Cog): 
     """Moderation"""
 
@@ -12,66 +19,131 @@ class Moderation(commands.Cog):
     @commands.command(name='kick')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def kick(self, ctx, *, reason="No reason"):
-        """Kick all mentioned members"""
+    async def kick(self, ctx, member=None, *reason_words):
+        """Kick the mentioned member"""
 
-        if not ctx.message.mentions:
-            await ctx.send(f'Usage: kick user reason (optional)', delete_after=5)
-            return
+        reason = ""
+        if len(reason_words) == 0:
+            reason = 'No reason'
+        else:
+            for word in reason_words:
+                reason = f'{reason} {word}'
 
-        members = ctx.message.mentions
-        for mem in members:
+        async def kick(mem) -> bool:
             try:
-                await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason: {reason}')
-                await ctx.guild.kick(mem)
+                try:
+                    await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{reason}')
+                except:
+                    print(f'Failed to message member {mem.name}')
+                    await ctx.send(f'Failed to message member {mem.name}')
+                mem.kick()
             except:
                 print(f'Failed to kick member {mem.name}')
+                await ctx.send(f'Failed to kick member {mem.name}')
+                return False 
+            return True
+
+        # mentions
+        if ctx.message.mentions:
+            for mem in ctx.message.mentions:
+                # perform
+                done = await kick(mem)
+        else:
+            # tag
+            if(is_integer(member)):
+                mem = await cfg.bot.fetch_user(int(member))
+                done = await kick(mem)
         
-        await ctx.send(f'{owouwu.gen()}, {len(members)} members kicked', delete_after=5)
-        print(f'{len(members)} members kicked from {ctx.guild.id} ({ctx.guild.name})')
+        if not done:
+            return
+
+        await ctx.send(f'{owouwu.gen()}, 1 member kicked', delete_after=5)
+        print(f'1 member kicked in {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='ban')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def ban(self, ctx, *, reason="No reason"):
-        """Ban all mentioned members"""
+    async def ban(self, ctx, member=None, *reason_words):
+        """Ban the mentioned member"""
 
-        if not ctx.message.mentions:
-            await ctx.send(f'Usage: ban user reason (optional)', delete_after=5)
-            return
+        reason = ""
+        if len(reason_words) == 0:
+            reason = 'No reason'
+        else:
+            for word in reason_words:
+                reason = f'{reason} {word}'
 
-        members = ctx.message.mentions
-        for mem in members:
+        async def ban(mem) -> bool:
             try:
-                await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason: {reason}')
+                try:
+                    await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{reason}')
+                except:
+                    print(f'Failed to message member {mem.name}')
+                    await ctx.send(f'Failed to message member {mem.name}')
                 await ctx.guild.ban(mem)
             except:
                 print(f'Failed to ban member {mem.name}')
+                await ctx.send(f'Failed to ban member {mem.name}')
+                return False
+            return True
 
-        await ctx.send(f'{owouwu.gen()}, {len(members)} members banned', delete_after=5)
-        print(f'{len(members)} members banned from {ctx.guild.id} ({ctx.guild.name})')
+        # mentions
+        if ctx.message.mentions:
+            for mem in ctx.message.mentions:
+                # perform
+                done = await ban(mem)
+        else:
+            # tag
+            if(is_integer(member)):
+                mem = await cfg.bot.fetch_user(int(member))
+                done = await ban(mem)
+
+        if not done:
+                return
+
+        await ctx.send(f'{owouwu.gen()}, 1 member banned', delete_after=5)
+        print(f'1 member banned in {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     @commands.command(name='warn')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def warn(self, ctx, *, reason="No reason"):
-        """Warn all mentioned members"""
+    async def warn(self, ctx, member=None, *reason_words):
+        """Warn the mentioned member"""
 
-        if not ctx.message.mentions:
-            await ctx.send(f'Usage: warn user reason (optional)', delete_after=5)
+        reason = ""
+        if len(reason_words) == 0:
+            reason = 'No reason'
+        else:
+            for word in reason_words:
+                reason = f'{reason} {word}'
+
+        async def warn(mem) -> bool:
+            try:
+                await mem.send(f'{owouwu.gen()}, you have been warned from the moderators of {ctx.guild.name} for reason:{reason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
+            except:
+                print(f'Failed to message member {mem.name}')
+                await ctx.send(f'Failed to message member {mem.name}')
+                return False
+            return True
+
+        # mentions
+        if ctx.message.mentions:
+            for mem in ctx.message.mentions:
+                # perform
+                done = await warn(mem)
+        else:
+            # tag
+            if(is_integer(member)):
+                mem = await cfg.bot.fetch_user(int(member))
+                done = await warn(mem)
+
+        if not done:
             return
 
-        members = ctx.message.mentions
-        for mem in members:
-            try:
-                await mem.send(f', {owouwu.gen()}, you have been warned from the moderators of {ctx.guild.name} for reason: {reason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
-            except:
-                print(f'Failed to warn member {mem.name}')
-
-        await ctx.send(f'{owouwu.gen()}, {len(members)} members warned', delete_after=5)
-        print(f'{len(members)} members warned in {ctx.guild.id} ({ctx.guild.name})')
+        await ctx.send(f'{owouwu.gen()}, 1 member warned', delete_after=5)
+        print(f'1 member warned in {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
     
