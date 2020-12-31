@@ -28,6 +28,9 @@ async def checkMessage(messagecontext):
             await message.add_reaction('<:catgm:782652523462393918>')
         if 'gn' in words:
             await message.add_reaction('<:catgn:782652492847775794>')
+    
+    elif 'i love you' in message.content.lower():
+        await message.add_reaction('<:love:794076402945228811>')
 
     # check filters
     else:
