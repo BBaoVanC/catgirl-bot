@@ -1,5 +1,6 @@
 import configparser
 import discord
+from discord import DMChannel
 from discord.ext import commands
 from discord import Intents
 
@@ -8,7 +9,12 @@ config = configparser.ConfigParser()
 
 def get_prefix(bot, message):
 
-    guild_prefix = config[str(message.channel.guild.id)]['prefix']
+    # not dm, get config, otherwise fallback
+    if not isinstance(message.channel, DMChannel):
+        guild_prefix = config[str(message.channel.guild.id)]['prefix']
+    else:
+        guild_prefix = "?"
+
     prefixes = [str(guild_prefix)]
 
     return commands.when_mentioned_or(*prefixes)(bot, message)
@@ -21,6 +27,9 @@ async def hasperms(ctx):
     user = ctx.message.author
     has_mod = False
 
+    if isinstance(ctx.message.channel, DMChannel):
+        return False # dm
+
     for role in user.roles:
         if int(role.id) == int(config[str(ctx.guild.id)]['modrole']):
             has_mod = True
@@ -31,4 +40,4 @@ async def hasperms(ctx):
     return ret
 
 def isguild(ctx):
-    return ctx.guild != None
+    return (not isinstance(ctx.message.channel, DMChannel))

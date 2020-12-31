@@ -1,5 +1,5 @@
 import discord, os, json
-import cfg, logger, filtercheck
+import cfg, logger, filtercheck, owouwu
 from discord.ext import commands
 from datetime import datetime
 from context import messagecontext
@@ -49,9 +49,9 @@ class Filter(commands.Cog):
             cfg.config.write(file)
             file.close()
             if(args[0] == 'add'):
-                await ctx.send(f'{len(words)} words added to filter', delete_after=5)
+                await ctx.send(f'{len(words)} words added to filter, {owouwu.gen()}', delete_after=5)
             elif(args[0] == 'remove'):
-                await ctx.send(f'{len(words)} words removed from filter', delete_after=5)
+                await ctx.send(f'{len(words)} words removed from filter, {owouwu.gen()}', delete_after=5)
             
             await ctx.message.add_reaction('✅')
         except:
@@ -82,7 +82,7 @@ class Filter(commands.Cog):
             return
 
         print(f'No filter role set to {ctx.guild.get_role(int(role_id))}')
-        await ctx.send(f'No filter role set to "{ctx.guild.get_role(int(role_id))}"', delete_after=5)
+        await ctx.send(f'No filter role set to "{ctx.guild.get_role(int(role_id))}", {owouwu.gen()}', delete_after=5)
         await ctx.message.add_reaction('✅')
 
     @commands.Cog.listener()

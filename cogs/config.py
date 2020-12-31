@@ -1,4 +1,4 @@
-import discord, cfg
+import discord, cfg, owouwu
 from discord.ext import commands
 
 class Config(commands.Cog):
@@ -55,7 +55,7 @@ class Config(commands.Cog):
             cfg.config.write(file)
             file.close()
             
-            await ctx.send(f'Moderator role changed to "{ctx.guild.get_role(int(role_id))}"')
+            await ctx.send(f'Moderator role changed to "{ctx.guild.get_role(int(role_id))}", {owouwu.gen()}')
             print(f'Moderator role for {ctx.guild.id} ({ctx.guild.name}) changed to "{ctx.guild.get_role(int(role_id))}"')
             await ctx.message.add_reaction('✅')
         except:

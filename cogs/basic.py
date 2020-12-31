@@ -1,4 +1,4 @@
-import discord, cfg, os, sys, time
+import discord, cfg, os, sys, time, owouwu
 from discord.ext import commands
 from dotenv import load_dotenv
 from timeformat import format_time
@@ -29,7 +29,7 @@ class Base(commands.Cog):
     async def hello_command(self, ctx):
         """UwU"""
 
-        await ctx.send(f'Hello master! UwU')
+        await ctx.send(f'Hello master! {owouwu.gen()}')
 
     # link source code (that's this!!!)
     @commands.command(name='github', aliases=['source', 'sourcecode'])
@@ -39,7 +39,7 @@ class Base(commands.Cog):
                               description='The source code of this bot',
                               colour=0xFB98FB,
                               url='https://github.com/Burrit0z/catgirl-bot')
-        embed.set_author(name='Catgirl Bot',
+        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
                          url='https://github.com/Burrit0z/',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.set_image(url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4g')
@@ -64,7 +64,7 @@ class Base(commands.Cog):
                 user = await cfg.bot.fetch_user(int(tag))
                 url = user.avatar_url
             except:
-                await ctx.send(f"Failed to get user avatar, did you provide a valid ID?", delete_after=5)
+                await ctx.send(f"Failed to get user avatar, did you provide a valid ID? {owouwu.gen()}", delete_after=5)
                 return
         else:
             url = ctx.message.author.avatar_url
@@ -85,13 +85,13 @@ class Base(commands.Cog):
             try:
                 user = await cfg.bot.fetch_user(int(tag))
             except:
-                await ctx.send(f"Failed to get user, did you provide a valid ID?", delete_after=5)
+                await ctx.send(f"Failed to get user, did you provide a valid ID? {owouwu.gen()}", delete_after=5)
                 return
         else:
             user = ctx.message.author
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name='Catgirl Bot',
+        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Display Name", value=user.display_name, inline=False)
@@ -99,7 +99,7 @@ class Base(commands.Cog):
         embed.add_field(name="Created", value=user.created_at, inline=False)
         embed.set_thumbnail(url=user.avatar_url)
 
-        await ctx.send(content=f'**User info for "{user.name}"**', embed=embed)
+        await ctx.send(content=f'**{owouwu.gen()} user info for "{user.name}"**', embed=embed)
 
 
     # invite link for the current bot
@@ -109,11 +109,11 @@ class Base(commands.Cog):
         url = f'<https://discord.com/oauth2/authorize?client_id={os.getenv("CLIENT_ID")}&scope=bot>'
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name='Catgirl Bot',
+        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.set_image(url='https://raw.githubusercontent.com/Burrit0z/catgirl-bot/master/catgirl.png')
-        await ctx.send(content=f'**UwU, here is the invite link:\n{url}**', embed=embed)
+        await ctx.send(content=f'**Here is the invite link {owouwu.gen()}\n{url}**', embed=embed)
 
     # system info
     @commands.command(name='sysinfo', aliases=['stats'])
@@ -125,9 +125,9 @@ class Base(commands.Cog):
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=460&u=3ab50d6fc0e3ccb4d6ced23ae2f80cbe82d9aaf0&v=4')
         embed.add_field(name="Python version", value=sys.version, inline=False)
-        embed.add_field(name="Uptime", value=timeformat.format_time(time.time() - boot_time), inline=False)
+        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
 
-        await ctx.send(content=f'UwU here you go', embed=embed)
+        await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
 # add cog
 def setup(bot):
