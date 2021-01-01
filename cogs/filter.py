@@ -107,6 +107,9 @@ class Filter(commands.Cog):
             else:
                 await filtercheck.checkMessage(context)
 
+            if message.content.startswith(prefix):
+                await logger.logCommandSent(context)
+
 # add cog
 def setup(bot):
     bot.add_cog(Filter(bot))

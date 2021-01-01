@@ -29,7 +29,7 @@ async def logChatMessage(messagecontext):
 
         section_folder = f'logs/guilds/{guild.id}/{channel.category.id}'
         settings.make_dir_if_needed(section_folder)
-        log_path = f'{section_folder}/{channel.id}'
+        log_path = f'{section_folder}/{channel.id}.log'
 
         try:
             message = f'{messagecontext.readable_log()}\n'
@@ -37,3 +37,15 @@ async def logChatMessage(messagecontext):
         except:
             message = f'{messagecontext.log_header()}: Unable to log contents, exception occured\n'
             write_log_message(message, log_path)
+
+async def logCommandSent(messagecontext):
+    # log to the command log of the guild
+    enabled = await loggingEnabled(messagecontext.message)
+    message = messagecontext.message
+    guild = messagecontext.guild()
+
+    log_path = f'logs/guilds/{guild.id}/commands.log'
+
+    if enabled:
+        message = f'{messagecontext.readable_log()}\n'
+        write_log_message(message, log_path)
