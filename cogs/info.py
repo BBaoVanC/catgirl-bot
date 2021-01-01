@@ -5,6 +5,7 @@ from discord.utils import oauth_url
 from dotenv import load_dotenv
 from timeformat import format_time
 from logger import write_log_message
+from psutil import virtual_memory
 
 # start a stopwatch of sorts
 boot_time = time.time()
@@ -135,6 +136,10 @@ class Info(commands.Cog):
     @commands.command(name='sysinfo', aliases=['stats'])
     async def send_stats(self, ctx):
         """Sends system info!"""
+        memory = virtual_memory()
+
+        def rounded_gb(bytes) -> int:
+            return round(bytes/1073741824, 1)
 
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name=f'Catgirl Bot - System info {owouwu.gen()}',
@@ -143,6 +148,9 @@ class Info(commands.Cog):
         embed.add_field(name="Python version", value=sys.version, inline=False)
         embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
         embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=False)
+        embed.add_field(name="Total Memory", value=f'{rounded_gb(memory.total)}GiB', inline=False)
+        embed.add_field(name="Memory Used", value=f'{rounded_gb(memory.used)}GiB ({memory.percent}%)', inline=False)
+        embed.add_field(name="Free Memory", value=f'{rounded_gb(memory.free)}GiB', inline=False)
 
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 

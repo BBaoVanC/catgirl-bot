@@ -17,6 +17,10 @@ Code is bad, that is to be expected. I will eventually fix it. This is my first 
     - prefix
     - ping
 
+## Dependencies:
+    - psutil
+    - python_env
+
 ## To use:
 1. Install python 3.9
 2. Create a file called .env in this folder
