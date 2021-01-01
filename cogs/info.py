@@ -1,6 +1,7 @@
 import discord, cfg, os, sys, time, owouwu
 from datetime import datetime
 from discord.ext import commands
+from discord.utils import oauth_url
 from dotenv import load_dotenv
 from timeformat import format_time
 from logger import write_log_message
@@ -8,13 +9,13 @@ from logger import write_log_message
 # start a stopwatch of sorts
 boot_time = time.time()
 
-class Base(commands.Cog):
-    """Base"""
+class Info(commands.Cog):
+    """Info"""
 
     def __init__(self, bot):
         self.bot = bot
         load_dotenv()
-        print('Cog "Base" loaded')
+        print('Cog "Info" loaded')
 
     @commands.command(name='say', aliases=['copy', 'mimic'])
     async def say_command(self, ctx, *, our_input: str):
@@ -121,7 +122,7 @@ class Base(commands.Cog):
     @commands.command(name='botinvite', aliases=['link'])
     async def get_link(self, ctx):
         """Get the invite link to add this bot to your server!"""
-        url = f'<https://discord.com/oauth2/authorize?client_id={os.getenv("CLIENT_ID")}&scope=bot>'
+        url = oauth_url(os.getenv("CLIENT_ID"))
 
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
@@ -160,5 +161,5 @@ class Base(commands.Cog):
 
 # add cog
 def setup(bot):
-    bot.add_cog(Base(bot))
+    bot.add_cog(Info(bot))
     

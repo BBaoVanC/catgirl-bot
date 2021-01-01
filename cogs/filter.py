@@ -64,6 +64,8 @@ class Filter(commands.Cog):
     async def set_role(self, ctx, *, role_id=None):
         """Set no filter role"""
 
+        guild_id = ctx.guild.id
+
         if not role_id:
             await ctx.send("Usage: filterrole role_id", delete_after=5)
             return
@@ -78,9 +80,10 @@ class Filter(commands.Cog):
                 await ctx.send(f'Command failed to execute', delete_after=5)
         except:
             print(f'Role for ID {role_id} not found')
+            await ctx.send(f'Role for ID {role_id} not found', delete_after=5)
             return
 
-        print(f'No filter role set to {ctx.guild.get_role(int(role_id))}')
+        print(f'No filter role set to {ctx.guild.get_role(int(role_id))} in guild {ctx.guild.name}-{guild_id}')
         await ctx.send(f'No filter role set to "{ctx.guild.get_role(int(role_id))}", {owouwu.gen()}', delete_after=5)
         await ctx.message.add_reaction('✅')
 
@@ -94,7 +97,7 @@ class Filter(commands.Cog):
         if guild:
 
             try:
-                prefix = settings.get_value(message.channel.guild.id, 'prefix')
+                prefix = settings.get_value(guild.id, 'prefix')
             except:
                 return
                 print(f'Error handling message')

@@ -32,11 +32,11 @@ async def logChatMessage(messagecontext):
         log_path = f'{section_folder}/{channel.id}.log'
 
         try:
-            message = f'{messagecontext.readable_log()}\n'
-            write_log_message(message, log_path)
+            log_message = f'{messagecontext.readable_log()}\n'
+            write_log_message(log_message, log_path)
         except:
-            message = f'{messagecontext.log_header()}: Unable to log contents, exception occured\n'
-            write_log_message(message, log_path)
+            log_message = f'{messagecontext.log_header()}: Unable to log contents, exception occured\n'
+            write_log_message(log_message, log_path)
 
 async def logCommandSent(messagecontext):
     # log to the command log of the guild
@@ -47,5 +47,21 @@ async def logCommandSent(messagecontext):
     log_path = f'logs/guilds/{guild.id}/commands.log'
 
     if enabled:
-        message = f'{messagecontext.readable_log()}\n'
-        write_log_message(message, log_path)
+        log_message = f'{messagecontext.readable_log()}\n'
+        write_log_message(log_message, log_path)
+
+async def logMessagedAltered(oldmessage, newmessage):
+    # args should be of type message context
+    guild = oldmessage.guild()
+    log_message = f'{oldmessage.log_header()} altered message.\nOld: {oldmessage.message.content}\nNew: {newmessage.message.content}\n\n'
+    log_path = f'logs/guilds/{guild.id}/messages_changed.log'
+
+    write_log_message(log_message, log_path)
+
+async def logMessagedDeleted(messagecontext):
+    # args should be of type message context
+    guild = messagecontext.guild()
+    log_message = f'{messagecontext.log_header()} deleted message: {messagecontext.message.content}\n\n'
+    log_path = f'logs/guilds/{guild.id}/messages_changed.log'
+
+    write_log_message(log_message, log_path)

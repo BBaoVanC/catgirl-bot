@@ -11,10 +11,11 @@ load_dotenv()
 
 # cog list
 cogs = [
-    'cogs.basic',
+    'cogs.info',
     'cogs.filter',
     'cogs.moderation',
-    'cogs.config'
+    'cogs.config',
+    'cogs.messagetrack'
 ]
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
