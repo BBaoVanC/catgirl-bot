@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 sys.path.insert(1, 'mod')
 sys.path.insert(1, 'data')
 from logger import write_log_message
+from filemanager import make_dir_if_needed
 import cfg, settings
 
 load_dotenv()
@@ -30,9 +31,10 @@ if __name__ == '__main__':
 async def connected():
 
     # log folder
-    settings.make_dir_if_needed('logs')
-    settings.make_dir_if_needed('logs/botevent')
-    settings.make_dir_if_needed('logs/guilds')
+    make_dir_if_needed('tmp')
+    make_dir_if_needed('logs')
+    make_dir_if_needed('logs/botevent')
+    make_dir_if_needed('logs/guilds')
 
     # read config file once
     if os.path.exists(f'config/bot/settings.ini'):
@@ -60,12 +62,12 @@ async def connected():
             print(f'Main config file does not exist, creating')
             cfg.config[guild.id] = settings.default_config()
 
-            settings.make_dir_if_needed(f'config')
-            settings.make_dir_if_needed(f'config/bot')
+            make_dir_if_needed(f'config')
+            make_dir_if_needed(f'config/bot')
             settings.save_config()
         
         # make logs for each guild
-        settings.make_dir_if_needed(f'logs/guilds/{guild.id}')
+        make_dir_if_needed(f'logs/guilds/{guild.id}')
 
 @cfg.bot.event
 async def on_ready():

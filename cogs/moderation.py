@@ -1,5 +1,5 @@
 import discord
-import cfg, owouwu
+import cfg, owouwu, filemanager, os
 from discord.ext import commands
 
 def is_integer(str):
@@ -159,6 +159,18 @@ class Moderation(commands.Cog):
         messages = await ctx.channel.purge(limit=int(num))
         await ctx.send(f'Deleted {len(messages)} message(s), {owouwu.gen()}', delete_after=5)
         print(f'{len(messages)} messages purged from {ctx.message.channel.name} in {ctx.guild.id} ({ctx.guild.name})')
+
+    @commands.command(name='getlogs')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
+    async def get_logs(self, ctx):
+        """Get a zip of all the logs the bot has collected from the server"""
+
+        guild = ctx.guild
+        zip_path = await filemanager.make_zip_file(guild)
+
+        print(f'Logs requested for guild: {guild.name}-{guild.id}. Resulting temp file located at: {zip_path}')
+        await ctx.send(content=f'Logs for guild **{ctx.guild.name}**', file=discord.File(zip_path))
 
 
 # add cog

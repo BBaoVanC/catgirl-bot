@@ -1,5 +1,6 @@
 from context import messagecontext
-import os, settings
+from filemanager import make_dir_if_needed
+import os
 
 async def loggingEnabled(message) -> bool:
     enabled = True
@@ -28,7 +29,7 @@ async def logChatMessage(messagecontext):
     if enabled:
 
         section_folder = f'logs/guilds/{guild.id}/{channel.category.id}'
-        settings.make_dir_if_needed(section_folder)
+        make_dir_if_needed(section_folder)
         log_path = f'{section_folder}/{channel.id}.log'
 
         try:
@@ -55,7 +56,7 @@ async def logMessagedAltered(oldmessage, newmessage):
 
     if oldmessage.message.content == newmessage.message.content:
         return
-        
+
     guild = oldmessage.guild()
     log_message = f'{oldmessage.log_header()} altered message.\nOld: {oldmessage.message.content}\nNew: {newmessage.message.content}\n\n'
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'

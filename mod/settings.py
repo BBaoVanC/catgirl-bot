@@ -3,10 +3,6 @@
 # also handles directory creation
 import os, cfg
 
-def make_dir_if_needed(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
-
 def default_config() -> dict:
     return {
         'filterRole' : '1', # so none, but store an int
