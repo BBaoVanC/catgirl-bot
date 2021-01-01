@@ -2,7 +2,6 @@ import configparser
 import discord
 from discord import DMChannel
 from discord.ext import commands
-from discord import Intents
 
 # config
 config = configparser.ConfigParser()

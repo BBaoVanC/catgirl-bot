@@ -1,8 +1,7 @@
 # file manager.py
 # handles files n shit
 # iirc shutil is python 3 only
-import os
-import shutil
+import os, shutil
 
 def make_dir_if_needed(path):
     if not os.path.exists(path):
