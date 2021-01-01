@@ -41,3 +41,4 @@ async def hasperms(ctx):
 
 def isguild(ctx):
     return (not isinstance(ctx.message.channel, DMChannel))
+    

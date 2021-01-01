@@ -1,5 +1,5 @@
 import discord, os, json
-import cfg, logger, filtercheck, owouwu
+import cfg, logger, filtercheck, owouwu, settings
 from discord.ext import commands
 from datetime import datetime
 from context import messagecontext
@@ -17,6 +17,8 @@ class Filter(commands.Cog):
     async def filter_command(self, ctx, *, input=None):
         """Adjust filtered words"""
 
+        guild_id = ctx.guild.id
+
         if not input:
             await ctx.send(f'Usage: filter add/remove word', delete_after=5)
             return
@@ -27,7 +29,7 @@ class Filter(commands.Cog):
             await ctx.send(f'Usage: filter add/remove word', delete_after=5)
             return
     
-        filter = json.loads(cfg.config[f'{ctx.guild.id}']['filter'])
+        filter = json.loads(settings.get_value(guild_id, 'filter'))
         words = input.split()
         del words[0] # delete the first term, the "operand"
 
@@ -42,12 +44,11 @@ class Filter(commands.Cog):
             return
 
         # save the file, convert the ' to " first, since json dies
-        cfg.config[f'{ctx.guild.id}']['filter'] = f'{filter}'.replace('\'','"')
+        settings.set_value(guild_id, 'filter', f'{filter}'.replace('\'','"'))
 
         try:
-            file = open(f'config/bot/settings.ini', 'w')
-            cfg.config.write(file)
-            file.close()
+            settings.save_config()
+
             if(args[0] == 'add'):
                 await ctx.send(f'{len(words)} words added to filter, {owouwu.gen()}', delete_after=5)
             elif(args[0] == 'remove'):
@@ -70,11 +71,9 @@ class Filter(commands.Cog):
         try:
             role = ctx.guild.get_role(int(role_id))
             # save file
-            cfg.config[f'{ctx.guild.id}']['filterrole'] = role_id
+            settings.set_value(guild_id, 'filterrole', role_id)
             try:
-                file = open(f'config/bot/settings.ini', 'w')
-                cfg.config.write(file)
-                file.close()
+                settings.save_config()
             except:
                 await ctx.send(f'Command failed to execute', delete_after=5)
         except:
@@ -95,7 +94,7 @@ class Filter(commands.Cog):
         if guild:
 
             try:
-                prefix = cfg.config[str(message.channel.guild.id)]['prefix']
+                prefix = settings.get_value(message.channel.guild.id, 'prefix')
             except:
                 return
                 print(f'Error handling message')
@@ -111,3 +110,4 @@ class Filter(commands.Cog):
 # add cog
 def setup(bot):
     bot.add_cog(Filter(bot))
+    

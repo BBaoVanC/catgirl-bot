@@ -8,3 +8,4 @@ def format_time(seconds) -> str:
     minutes = minutes % 60
     
     return(f'{int(hours)} hours {int(minutes)} minutes {int(seconds)} seconds')
+    

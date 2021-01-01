@@ -24,7 +24,7 @@ class Moderation(commands.Cog):
 
         reason = ""
         if len(reason_words) == 0:
-            reason = 'No reason'
+            reason = ' No reason'
         else:
             for word in reason_words:
                 reason = f'{reason} {word}'
@@ -69,7 +69,7 @@ class Moderation(commands.Cog):
 
         reason = ""
         if len(reason_words) == 0:
-            reason = 'No reason'
+            reason = ' No reason'
         else:
             for word in reason_words:
                 reason = f'{reason} {word}'
@@ -114,7 +114,7 @@ class Moderation(commands.Cog):
 
         reason = ""
         if len(reason_words) == 0:
-            reason = 'No reason'
+            reason = ' No reason'
         else:
             for word in reason_words:
                 reason = f'{reason} {word}'
@@ -164,3 +164,4 @@ class Moderation(commands.Cog):
 # add cog
 def setup(bot):
     bot.add_cog(Moderation(bot))
+    

@@ -1,14 +1,20 @@
 from context import messagecontext
-import os, cfg
+import os, settings
 
 async def loggingEnabled(message) -> bool:
     enabled = True
     try:
-        enabled = cfg.config.getboolean(str(message.channel.guild.id), 'loggingEnabled')
+        enabled = get_boolean_value(message.channel.guild.id, 'loggingEnabled')
     except:
-        await message.channel.send('Warning: Could not convert the value of "loggingEnabled" to a boolean, defaulting to True.\nPlease make sure you have set yes or no for this option')
+        pass
 
     return enabled
+
+def write_log_message(message, path):
+    # open file and write 
+    f = open(path, 'a')
+    f.write(message)
+    f.close
 
 # define log function
 async def logChatMessage(messagecontext):
@@ -20,13 +26,14 @@ async def logChatMessage(messagecontext):
     guild = messagecontext.guild()
 
     if enabled:
-        try:
 
-            # open file and write 
-            f = open(f'logs/guilds/{guild.id}/{channel.name}.log', 'a')
-            f.write(f'{messagecontext.readable_log()}\n')
-            f.close
+        section_folder = f'logs/guilds/{guild.id}/{channel.category.id}'
+        settings.make_dir_if_needed(section_folder)
+        log_path = f'{section_folder}/{channel.id}'
+
+        try:
+            message = f'{messagecontext.readable_log()}\n'
+            write_log_message(message, log_path)
         except:
-            f = open(f'logs/guilds/{guild.id}/{channel.name}.log', 'a')
-            f.write(f'{messagecontext.log_header()}: Unable to log contents, exception occured\n')
-            f.close
+            message = f'{messagecontext.log_header()}: Unable to log contents, exception occured\n'
+            write_log_message(message, log_path)

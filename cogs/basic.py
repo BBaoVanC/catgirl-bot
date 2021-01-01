@@ -1,7 +1,9 @@
 import discord, cfg, os, sys, time, owouwu
+from datetime import datetime
 from discord.ext import commands
 from dotenv import load_dotenv
 from timeformat import format_time
+from logger import write_log_message
 
 # start a stopwatch of sorts
 boot_time = time.time()
@@ -30,6 +32,19 @@ class Base(commands.Cog):
         """UwU"""
 
         await ctx.send(f'Hello master! {owouwu.gen()}')
+
+    @commands.command(name='stopbot', hidden=True)
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        """Shutdown"""
+
+        # log botevent
+        botevent_log = f'logs/botevent/botevent.log'
+        message = f'{str(datetime.now())} Shutting down!\n'
+        write_log_message(message, botevent_log)
+
+        await ctx.send(f'Going to sleep! {owouwu.gen()}')
+        sys.exit()
 
     # link source code (that's this!!!)
     @commands.command(name='github', aliases=['source', 'sourcecode'])
@@ -146,3 +161,4 @@ class Base(commands.Cog):
 # add cog
 def setup(bot):
     bot.add_cog(Base(bot))
+    
