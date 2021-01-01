@@ -52,6 +52,10 @@ async def logCommandSent(messagecontext):
 
 async def logMessagedAltered(oldmessage, newmessage):
     # args should be of type message context
+
+    if oldmessage.message.content == newmessage.message.content:
+        return
+        
     guild = oldmessage.guild()
     log_message = f'{oldmessage.log_header()} altered message.\nOld: {oldmessage.message.content}\nNew: {newmessage.message.content}\n\n'
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'
