@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# cfg.py
+# variables that need to be accesed globally, as well as command check function defs
 import configparser
 import discord
 from discord import DMChannel

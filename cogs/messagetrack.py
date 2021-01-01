@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# messagetrack.py
+# track changes in existing messages and log them
 import discord, logger
 from discord.ext import commands
 from context import messagecontext

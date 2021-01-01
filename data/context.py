@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
+# context.py
+# a class for getting data for a message
 from datetime import datetime
-# messagecontext.py
 
 class messagecontext(object):
     """An object for message context, used for both logging and filtering"""

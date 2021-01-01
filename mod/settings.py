@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # settings.py
 # handles getting, saving, setting config
 # also handles directory creation

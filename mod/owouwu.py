@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # owouwu.py
 # gives random weeb thing to add to messaages
 import random

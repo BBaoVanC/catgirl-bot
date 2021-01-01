@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# filtercheck.py
+# function to check message content
 from context import messagecontext
 import cfg, json, owouwu
 

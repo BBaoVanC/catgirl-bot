@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# timeformat.py
+# formats time from seconds into a readable format
 import time
 
 # function to format time of seconds into a readable format

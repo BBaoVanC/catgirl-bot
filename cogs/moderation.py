@@ -1,4 +1,6 @@
-
+#!/usr/bin/env python3
+# moderation.py
+# basic moderation commands
 import discord, cfg, owouwu, filemanager, os
 from discord.ext import commands
 

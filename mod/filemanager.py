@@ -1,4 +1,5 @@
-# file manager.py
+#!/usr/bin/env python3
+# filemanager.py
 # handles files n shit
 # iirc shutil is python 3 only
 import os, shutil

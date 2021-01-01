@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# info.py
+# basic commands for information related to the bot and system
 import discord, cfg, os, sys, time, owouwu
 from datetime import datetime
 from discord.ext import commands

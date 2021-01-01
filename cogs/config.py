@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# config.py
+# handles some basic config settings
 import discord, cfg, owouwu, settings
 from discord.ext import commands
 

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# logger.py
+# log stuff to files
 from context import messagecontext
 from filemanager import make_dir_if_needed
 import os
@@ -22,7 +25,6 @@ async def logChatMessage(messagecontext):
 
     # write message to a file if the option is on
     enabled = await loggingEnabled(messagecontext.message)
-    message = messagecontext.message
     channel = messagecontext.channel()
     guild = messagecontext.guild()
 
@@ -42,7 +44,6 @@ async def logChatMessage(messagecontext):
 async def logCommandSent(messagecontext):
     # log to the command log of the guild
     enabled = await loggingEnabled(messagecontext.message)
-    message = messagecontext.message
     guild = messagecontext.guild()
 
     log_path = f'logs/guilds/{guild.id}/commands.log'

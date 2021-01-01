@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# filter.py
+# deals with content based filter settings
 import discord, json
 import cfg, logger, filtercheck, owouwu, settings
 from discord.ext import commands
