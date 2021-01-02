@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # info.py
 # basic commands for information related to the bot and system
-import discord, cfg, os, sys, time, owouwu
+import discord, cfg, os, sys, time, owouwu, filtercheck
+from context import messagecontext
 from datetime import datetime
 from discord.ext import commands
 from discord.utils import oauth_url
@@ -27,6 +28,9 @@ class Info(commands.Cog):
 
         if '@' in our_input and '<' in our_input and '>' in our_input or '@everyone' in our_input or '@here' in our_input:
             await ctx.send('I cannot mention users!', delete_after=5)
+            return
+
+        if await filtercheck.breaks_filter(messagecontext(ctx.message)):
             return
 
         await ctx.send(our_input)

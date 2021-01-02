@@ -2,7 +2,7 @@
 # filtercheck.py
 # function to check message content
 from context import messagecontext
-import cfg, json, owouwu
+import cfg, settings, json, owouwu
 
 # define message check function
 # checks against filter and some other things
@@ -41,18 +41,27 @@ async def checkMessage(messagecontext):
 
     # check filters
     # exempt users with no filter role
-    try:
-        if messagecontext.guild().get_role(cfg.config.getint(f'{messagecontext.guild_id()}', 'filterrole')) in message.author.roles:
+    #try:
+        if messagecontext.guild().get_role(settings.get_integer_value(messagecontext.guild_id(), 'filterrole')) in message.author.roles:
             return
-    except:
-        await messagecontext.channel().send('No filter role is not set! Please set nofilter role with filterrole command!')
+    #except:
+    #    await messagecontext.channel().send('No filter role is not set! Please set nofilter role with filterrole command!')
 
-    # cursed code to load filter as a list and check the message
-    filter_str = cfg.config[f'{messagecontext.guild_id()}']['filter']
-    filter_list = json.loads(filter_str) # loads as list
-    if messagecontext.contains_filtered_terms(filter_list):
+    filtered = await breaks_filter(messagecontext)
+    if filtered:
         await messagecontext.channel().send(content=f'{message.author.mention}, that word is not allowed here!', delete_after=10)
         try:
             await messagecontext.message.delete()
         except:
             print(f'Failed to delete message in guild {messagecontext.guild().name}')
+
+
+async def breaks_filter(messagecontext) -> bool:
+    message = messagecontext.message
+
+    filter_str = settings.get_value(messagecontext.guild_id(), 'filter')
+    filter_list = json.loads(filter_str) # loads as list
+    if messagecontext.contains_filtered_terms(filter_list):
+        return True
+
+    return False
