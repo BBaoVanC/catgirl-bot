@@ -16,6 +16,7 @@ Code is bad, that is to be expected. I will eventually fix it. This is my first 
     - botinvite/link
     - prefix
     - ping
+    - jumbo/emote
 
 ## Dependencies:
     - psutil

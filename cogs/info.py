@@ -35,6 +35,17 @@ class Info(commands.Cog):
 
         await ctx.send(our_input)
 
+    @commands.command(name='jumbo', aliases=['emote'])
+    async def enlarge_emote(self, ctx, emote: discord.PartialEmoji):
+        """Large emote"""
+        # inspired by gir's jumbo command
+
+        embed = discord.Embed()
+        embed.set_image(url=emote.url)
+        await ctx.send(embed=embed)
+        await ctx.message.delete()
+       
+
     @commands.command(name='hello', hidden=True)
     @commands.is_owner()
     async def hello_command(self, ctx):
