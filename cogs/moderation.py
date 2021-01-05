@@ -37,11 +37,11 @@ class Moderation(commands.Cog):
                     await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{reason}')
                 except:
                     print(f'Failed to message member {mem.name}')
-                    await ctx.send(f'Failed to message member {mem.name}')
+                    await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
                 await mem.kick()
             except:
                 print(f'Failed to kick member {mem.name}')
-                await ctx.send(f'Failed to kick member {mem.name}')
+                await ctx.send(f'Failed to kick member {mem.name}', delete_after=5)
                 return False 
             return True
 
@@ -82,12 +82,12 @@ class Moderation(commands.Cog):
                     await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{reason}')
                 except:
                     print(f'Failed to message member {mem.name}')
-                    await ctx.send(f'Failed to message member {mem.name}')
+                    await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
                 await ctx.guild.ban(mem)
                 print(f'{mem.name} - {mem.id} was banned from {ctx.guild.name} - {ctx.guild.id}')
             except:
                 print(f'Failed to ban member {mem.name}')
-                await ctx.send(f'Failed to ban member {mem.name}')
+                await ctx.send(f'Failed to ban member {mem.name}', delete_after=5)
                 return False
             return True
 
@@ -127,7 +127,7 @@ class Moderation(commands.Cog):
                 await mem.send(f'{owouwu.gen()}, you have been warned from the moderators of {ctx.guild.name} for reason:{reason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
             except:
                 print(f'Failed to message member {mem.name}')
-                await ctx.send(f'Failed to message member {mem.name}')
+                await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
                 return False
             return True
 

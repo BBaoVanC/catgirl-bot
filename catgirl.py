@@ -27,7 +27,8 @@ cogs = [
     'cogs.filter',
     'cogs.moderation',
     'cogs.config',
-    'cogs.messagetrack'
+    'cogs.messagetrack',
+    'cogs.misc'
 ]
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].

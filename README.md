@@ -17,14 +17,17 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
         - avatar/pfp
         - botinvite/link
         - ping
-        - jumbo/emote
         - sysinfo/stats
         - uptime
         - github/source/sourcecode
+    - Misc:
         - say/copy/mimic
+        - leo s/n
+        - jumbo/emote
     - Config:
         - prefix
         - modrole
+        - logging yes/no
 - Tracks message edits/deletion
 - Logs all messages sent (can be downloaded by moderators with the getlogs command)
 - Reacts to messages containing specific content (try "neko" or "catgirl", as well as "gm" and "gn")

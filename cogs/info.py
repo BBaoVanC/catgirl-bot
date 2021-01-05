@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # info.py
 # basic commands for information related to the bot and system
-import discord, cfg, os, sys, time, owouwu, filtercheck
-from context import messagecontext
+import discord, cfg, os, sys, time, owouwu
 from datetime import datetime
 from discord.ext import commands
 from discord.utils import oauth_url
@@ -21,38 +20,6 @@ class Info(commands.Cog):
         self.bot = bot
         load_dotenv()
         print('Cog "Info" loaded')
-
-    @commands.check(cfg.isguild)
-    @commands.command(name='say', aliases=['copy', 'mimic'])
-    async def say_command(self, ctx, *, our_input: str):
-        """Says what you tell me to!"""
-
-        if '@' in our_input and '<' in our_input and '>' in our_input or '@everyone' in our_input or '@here' in our_input:
-            await ctx.send('I cannot mention users!', delete_after=5)
-            return
-
-        if await filtercheck.breaks_filter(messagecontext(ctx.message)):
-            return
-
-        await ctx.send(our_input)
-
-    @commands.command(name='jumbo', aliases=['emote'])
-    async def enlarge_emote(self, ctx, emote: discord.PartialEmoji):
-        """Large emote"""
-        # inspired by gir's jumbo command
-
-        embed = discord.Embed()
-        embed.set_image(url=emote.url)
-        await ctx.send(embed=embed)
-        await ctx.message.delete()
-       
-
-    @commands.command(name='hello', hidden=True)
-    @commands.is_owner()
-    async def hello_command(self, ctx):
-        """UwU"""
-
-        await ctx.send(f'Hello master! {owouwu.gen()}')
 
     @commands.command(name='stopbot', hidden=True)
     @commands.is_owner()

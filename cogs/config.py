@@ -64,6 +64,30 @@ class Config(commands.Cog):
         except:
             await ctx.send(f'Command failed to execute', delete_after=5)
 
+    # set guild logging on/off
+    @commands.command(name='logging')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
+    async def set_logging(self, ctx, *, option: str):
+        """Set guild logging yes/no"""
+
+        guild_id = ctx.guild.id
+
+        if not option or (option != 'yes' and option != 'no'):
+            await ctx.send(f'Usage: logging yes/no', delete_after=5)
+            return
+
+        settings.set_value(guild_id, 'loggingenabled', option)
+
+        try:
+            settings.save_config()
+            
+            await ctx.send(f'Logging set to {option}", {owouwu.gen()}')
+            print(f'Logging for guild {ctx.guild.name} - {guild_id} set to {option}", {owouwu.gen()}')
+            await ctx.message.add_reaction('✅')
+        except:
+            await ctx.send(f'Command failed to execute', delete_after=5)
+
 # add cog
 def setup(bot):
     bot.add_cog(Config(bot))

@@ -3,6 +3,7 @@
 # log stuff to files
 from context import messagecontext
 from filemanager import make_dir_if_needed
+from settings import get_boolean_value
 import os
 
 async def loggingEnabled(message) -> bool:
@@ -55,6 +56,10 @@ async def logCommandSent(messagecontext):
 async def logMessagedAltered(oldmessage, newmessage):
     # args should be of type message context
 
+    enabled = await loggingEnabled(messagecontext.message)
+    if not enabled:
+        return
+
     if oldmessage.message.content == newmessage.message.content:
         return
 
@@ -66,6 +71,11 @@ async def logMessagedAltered(oldmessage, newmessage):
 
 async def logMessagedDeleted(messagecontext):
     # args should be of type message context
+
+    enabled = await loggingEnabled(messagecontext.message)
+    if not enabled:
+        return
+
     guild = messagecontext.guild()
     log_message = f'{messagecontext.log_header()} deleted message: {messagecontext.message.content}\n\n'
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'
