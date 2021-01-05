@@ -3,16 +3,16 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
 
 ## Features
 - Commands:
-    Moderation:
+    - Moderation:
         - warn
         - kick
         - ban
         - purge
         - getlogs
-    Content Filtering:
+    - Content Filtering:
         - filterrole
         - filter add/remove
-    Info:
+    - Info:
         - userinfo/info/user
         - avatar/pfp
         - botinvite/link
@@ -22,7 +22,7 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
         - uptime
         - github/source/sourcecode
         - say/copy/mimic
-    Config:
+    - Config:
         - prefix
         - modrole
 - Tracks message edits/deletion
