@@ -56,7 +56,7 @@ async def logCommandSent(messagecontext):
 async def logMessagedAltered(oldmessage, newmessage):
     # args should be of type message context
 
-    enabled = await loggingEnabled(messagecontext.message)
+    enabled = await loggingEnabled(oldmessage.message)
     if not enabled:
         return
 
