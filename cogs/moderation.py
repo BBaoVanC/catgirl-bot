@@ -84,6 +84,7 @@ class Moderation(commands.Cog):
                     print(f'Failed to message member {mem.name}')
                     await ctx.send(f'Failed to message member {mem.name}')
                 await ctx.guild.ban(mem)
+                print(f'{mem.name} - {mem.id} was banned from {ctx.guild.name} - {ctx.guild.id}')
             except:
                 print(f'Failed to ban member {mem.name}')
                 await ctx.send(f'Failed to ban member {mem.name}')

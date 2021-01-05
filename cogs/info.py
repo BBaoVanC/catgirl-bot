@@ -22,6 +22,7 @@ class Info(commands.Cog):
         load_dotenv()
         print('Cog "Info" loaded')
 
+    @commands.check(cfg.isguild)
     @commands.command(name='say', aliases=['copy', 'mimic'])
     async def say_command(self, ctx, *, our_input: str):
         """Says what you tell me to!"""
@@ -81,11 +82,6 @@ class Info(commands.Cog):
         embed.set_footer(text='Made in Python with discord.py@rewrite', icon_url='http://i.imgur.com/5BFecvA.png')
 
         await ctx.send(content='**Catgirl bot source code UwU**', embed=embed)
-
-    @commands.Cog.listener()
-    async def on_member_ban(self, guild, user):
-        print(f'{user.name} - {user.id} was banned from {guild.name} - {guild.id}')
-    
 
     # get avatar
     @commands.command(name='avatar', aliases=['pfp'])

@@ -17,13 +17,19 @@ class MessageTrack(commands.Cog):
         old_context = messagecontext(oldmessage)
         new_context = messagecontext(newmessage)
 
-        await logger.logMessagedAltered(old_context, new_context)
+        # get guild
+        guild = old_context.guild()
+        if guild:
+            await logger.logMessagedAltered(old_context, new_context)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         context = messagecontext(message)
 
-        await logger.logMessagedDeleted(context)
+        # get guild
+        guild = context.guild()
+        if guild:
+            await logger.logMessagedDeleted(context)
 
 # add cog
 def setup(bot):
