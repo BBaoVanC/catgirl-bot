@@ -75,13 +75,13 @@ class Info(commands.Cog):
                               description='The source code of this bot',
                               colour=0xFB98FB,
                               url='https://github.com/Burrit0z/catgirl-bot')
-        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
+        embed.set_author(name=f'Catgirl Bot',
                          url='https://github.com/Burrit0z/',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
         embed.set_image(url='https://avatars0.githubusercontent.com/u/57574731?s=500g')
         embed.set_footer(text='Made in Python with discord.py@rewrite', icon_url='http://i.imgur.com/5BFecvA.png')
 
-        await ctx.send(content='**Catgirl bot source code UwU**', embed=embed)
+        await ctx.send(content=f'**Catgirl bot source code {owouwu.gen()}**', embed=embed)
 
     # get avatar
     @commands.command(name='avatar', aliases=['pfp'])
@@ -122,7 +122,7 @@ class Info(commands.Cog):
             user = ctx.message.author
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
+        embed.set_author(name=f'Catgirl Bot',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
         embed.add_field(name="Display Name", value=user.display_name, inline=False)
@@ -140,7 +140,7 @@ class Info(commands.Cog):
         url = oauth_url(os.getenv("CLIENT_ID"))
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
+        embed.set_author(name=f'Catgirl Bot',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
         embed.set_image(url='https://raw.githubusercontent.com/Burrit0z/catgirl-bot/master/catgirl.png')
@@ -156,7 +156,7 @@ class Info(commands.Cog):
             return round(bytes/1073741824, 1)
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name=f'Catgirl Bot - System info {owouwu.gen()}',
+        embed.set_author(name=f'Catgirl Bot - System info',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
         embed.add_field(name="Python version", value=sys.version, inline=False)
@@ -168,13 +168,26 @@ class Info(commands.Cog):
 
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
+    # just uptime
+    @commands.command(name='uptime')
+    async def send_uptime(self, ctx):
+        """Sends current bot uptime!"""
+
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_author(name=f'Catgirl Bot',
+                         url='https://github.com/Burrit0z/catgirl-bot',
+                         icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
+        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
+
+        await ctx.send(content=f'{owouwu.gen()} current bot uptime', embed=embed)
+
      # system info
     @commands.command(name='ping')
     async def send_ping(self, ctx):
         """Sends current ping!"""
 
         embed = discord.Embed(colour=0xFB98FB)
-        embed.set_author(name=f'Catgirl Bot {owouwu.gen()}',
+        embed.set_author(name=f'Catgirl Bot',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
         embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=False)
