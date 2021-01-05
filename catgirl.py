@@ -2,6 +2,14 @@
 # catgirl.py
 # main file for catgirl bot
 import discord, sys, os
+
+# check versions before continuing
+if sys.version_info[0] < 3:
+    raise Exception("Python 3 or higher is required for this bot! Recommended version: 3.9.1")
+
+if int(discord.__version__[2]) < 5:
+	raise Exception("Discord.py 1.5.0 or higher is required for this bot! Recommended version: 1.5.1")
+
 from datetime import datetime
 from dotenv import load_dotenv
 
