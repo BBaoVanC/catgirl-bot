@@ -2,6 +2,7 @@
 # image.py
 # image-based commands
 import discord, cfg, owouwu, random, json
+from cooldown import cooldown
 from urllib.request import Request, urlopen
 from discord.ext import commands
 
@@ -48,6 +49,7 @@ class Image(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.cooldown = cooldown(2)
         print('Cog "Image" loaded')
 
     @commands.check(cfg.isguild)
@@ -66,6 +68,10 @@ class Image(commands.Cog):
     @commands.command(name='leo')
     async def random_leo(self, ctx, *, option: str='s'):
         """Sends a random Leo pic, may or may not be lewd"""
+
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
 
         if not option:
             await ctx.send('Error: please specify an option, either s (sfw) or n (nsfw)', delete_after=5)
@@ -91,6 +97,10 @@ class Image(commands.Cog):
     @commands.command(name='neko')
     async def random_neko(self, ctx):
         """Sends a random neko pic"""
+
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
 
         headers = {'User-Agent': 'Mozilla/5.0'}
         request = Request(api_url, headers=headers)

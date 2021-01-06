@@ -111,7 +111,7 @@ async def logMessagedDeleted(messagecontext):
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'
 
     discord_message = {
-        'Message by' : messagecontext.readable_author(),
+        'Author' : messagecontext.readable_author(),
         'Message' : messagecontext.message.content
     }
 

@@ -2,13 +2,12 @@
 # info.py
 # basic commands for information related to the bot and system
 import discord, cfg, os, sys, time, owouwu
-from datetime import datetime
 from discord.ext import commands
 from discord.utils import oauth_url
 from dotenv import load_dotenv
 from timeformat import format_time
-from logger import write_log_message
 from psutil import virtual_memory
+from cooldown import cooldown
 
 # start a stopwatch of sorts
 boot_time = time.time()
@@ -18,6 +17,7 @@ class Info(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.cooldown = cooldown(2)
         load_dotenv()
         print('Cog "Info" loaded')
 
@@ -42,6 +42,10 @@ class Info(commands.Cog):
     async def get_avatar(self, ctx, *, tag=None):
         """Gets the avatar of a user, by mention or ID"""
 
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
+
         if ctx.message.mentions:
             url = ctx.message.mentions[0].avatar_url
         elif tag:
@@ -63,6 +67,10 @@ class Info(commands.Cog):
     @commands.command(name='userinfo', aliases=['info', 'user'])
     async def get_userinfo(self, ctx, *, tag=None):
         """Get user info, by mention or ID"""
+
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
 
         if ctx.message.mentions:
             user = ctx.message.mentions[0]
@@ -104,6 +112,11 @@ class Info(commands.Cog):
     @commands.command(name='sysinfo', aliases=['stats'])
     async def send_stats(self, ctx):
         """Sends system info!"""
+
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
+        
         memory = virtual_memory()
 
         def rounded_gb(bytes) -> int:
@@ -139,6 +152,10 @@ class Info(commands.Cog):
     @commands.command(name='ping')
     async def send_ping(self, ctx):
         """Sends current ping!"""
+
+        if not await self.cooldown.check_and_warn_usage(ctx.channel):
+            return
+        self.cooldown.was_used(ctx.guild.id)
 
         embed = discord.Embed(colour=0xFB98FB)
         embed.set_author(name=f'Catgirl Bot',
