@@ -3,13 +3,12 @@
 # log stuff to files
 from context import messagecontext
 from filemanager import make_dir_if_needed
-from settings import get_boolean_value
-import os
+import os, settings, discord
 
 async def loggingEnabled(message) -> bool:
     enabled = True
     try:
-        enabled = get_boolean_value(message.channel.guild.id, 'loggingEnabled')
+        enabled = settings.get_boolean_value(message.channel.guild.id, 'loggingEnabled')
     except:
         pass
 
@@ -21,6 +20,27 @@ def write_log_message(message, path):
         f = open(path, 'a')
         f.write(message)
         f.close
+    except:
+        pass
+
+async def send_discord_log_message(messagecontext, log_dict, title):
+    guild_id = messagecontext.guild_id()
+
+    logchannel = settings.get_integer_value(guild_id, 'logchannel')
+
+    channel = messagecontext.guild().get_channel(logchannel)
+
+    embed_wrapper = discord.Embed(colour=0xFB98FB)
+    embed_wrapper.set_author(name=title,
+                        url='https://github.com/Burrit0z/catgirl-bot',
+                        icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
+    
+    for key in log_dict.keys():
+        embed_wrapper.add_field(name=key, value=log_dict[key], inline=False)
+
+
+    try:
+        await channel.send(embed=embed_wrapper)
     except:
         pass
 
@@ -67,10 +87,17 @@ async def logMessagedAltered(oldmessage, newmessage):
         return
 
     guild = oldmessage.guild()
-    log_message = f'{oldmessage.log_header()} altered message.\nOld: {oldmessage.message.content}\nNew: {newmessage.message.content}\n\n'
+    log_message = f'{oldmessage.log_header()} edited message.\nOld: {oldmessage.message.content}\nNew: {newmessage.message.content}\n\n'
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'
 
+    discord_message = {
+        'Author' : oldmessage.readable_author(),
+        'Old message' : oldmessage.message.content,
+        'New message' : newmessage.message.content
+    }
+
     write_log_message(log_message, log_path)
+    await send_discord_log_message(oldmessage, discord_message, 'Edited message')
 
 async def logMessagedDeleted(messagecontext):
     # args should be of type message context
@@ -83,4 +110,11 @@ async def logMessagedDeleted(messagecontext):
     log_message = f'{messagecontext.log_header()} deleted message: {messagecontext.message.content}\n\n'
     log_path = f'logs/guilds/{guild.id}/messages_changed.log'
 
+    discord_message = {
+        'Message by' : messagecontext.readable_author(),
+        'Message' : messagecontext.message.content
+    }
+
+
     write_log_message(log_message, log_path)
+    await send_discord_log_message(messagecontext, discord_message, 'Deleted Message')

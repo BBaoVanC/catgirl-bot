@@ -22,13 +22,17 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
         - github/source/sourcecode
     - Misc:
         - say/copy/mimic
-        - leo s/n
         - jumbo/emote
+    - Image:
+        - neko
+        - leo s/n
     - Config:
         - prefix
         - modrole
         - logging yes/no
-- Tracks message edits/deletion
+        - logchannel
+
+- Tracks message edits/deletion, and sends to the channel with the id set in the logchannel command
 - Logs all messages sent (can be downloaded by moderators with the getlogs command)
 - Reacts to messages containing specific content (try "neko" or "catgirl", as well as "gm" and "gn")
 

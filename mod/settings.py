@@ -10,7 +10,8 @@ def default_config() -> dict:
         'filter' : [],
         'prefix' : '?',
         'loggingEnabled' : 'yes',
-        'modrole' : '1' # same here
+        'modrole' : '1', # same here
+        'logchannel' : '1'
     }
 
 def get_value(section, key) -> object:

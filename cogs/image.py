@@ -65,7 +65,7 @@ class Image(commands.Cog):
     @commands.check(cfg.isguild)
     @commands.command(name='leo')
     async def random_leo(self, ctx, *, option: str='s'):
-        """Sends a random *SFW* Leo pic, may or may not be lewd"""
+        """Sends a random Leo pic, may or may not be lewd"""
 
         if not option:
             await ctx.send('Error: please specify an option, either s (sfw) or n (nsfw)', delete_after=5)
