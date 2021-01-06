@@ -84,7 +84,7 @@ async def connected():
 @cfg.bot.event
 async def on_ready():
     print(f'{cfg.bot.user} has logged in to Discord!')
-    await cfg.bot.change_presence(activity=discord.Game(name='with catgirls'))
+    await cfg.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="catgirls"))
 
     await connected()
 

@@ -21,19 +21,6 @@ class Info(commands.Cog):
         load_dotenv()
         print('Cog "Info" loaded')
 
-    @commands.command(name='stopbot', hidden=True)
-    @commands.is_owner()
-    async def shutdown(self, ctx):
-        """Shutdown"""
-
-        # log botevent
-        botevent_log = f'logs/botevent/botevent.log'
-        message = f'{str(datetime.now())} Shutting down!\n'
-        write_log_message(message, botevent_log)
-
-        await ctx.send(f'Going to sleep! {owouwu.gen()}')
-        sys.exit()
-
     # link source code (that's this!!!)
     @commands.command(name='github', aliases=['source', 'sourcecode'])
     async def link_github(self, ctx):

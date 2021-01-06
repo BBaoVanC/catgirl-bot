@@ -106,6 +106,26 @@ class Misc(commands.Cog):
         embed.set_footer(text=f'Requested by {ctx.message.author.name}')
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
+    @commands.command(name='stopbot', hidden=True)
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        """Shutdown"""
+
+        # log botevent
+        botevent_log = f'logs/botevent/botevent.log'
+        message = f'{str(datetime.now())} Shutting down!\n'
+        write_log_message(message, botevent_log)
+
+        await ctx.send(f'Going to sleep! {owouwu.gen()}')
+        sys.exit()
+
+    @commands.command(name='status', hidden=True)
+    @commands.is_owner()
+    async def shutdown(self, ctx, *, status: str="catgirls"):
+        """Sets bot status"""
+
+        await cfg.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
+
 # add cog
 def setup(bot):
     bot.add_cog(Misc(bot))
