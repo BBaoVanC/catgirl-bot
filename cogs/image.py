@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-# misc.py
-# random assorted commands that don't fit into any category
-import discord, cfg, owouwu, filtercheck, random, json
+# image.py
+# image-based commands
+import discord, cfg, owouwu, random, json
 from urllib.request import Request, urlopen
-from  discord.ext import commands
-from context import messagecontext
+from discord.ext import commands
 
 api_url = 'https://nekos.life/api/v2/img/neko'
 
@@ -44,54 +43,65 @@ nsfw_leo_urls = [
     'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__ff139dedc4429cdaf7327ba33f060432.png'
 ]
 
-class Misc(commands.Cog):
-    """Misc"""
+class Image(commands.Cog):
+    """Image"""
 
     def __init__(self, bot):
         self.bot = bot
-        print('Cog "Misc" loaded')
+        print('Cog "Image" loaded')
 
-    @commands.command(name='hello', hidden=True)
-    @commands.is_owner()
-    async def hello_command(self, ctx):
-        """UwU"""
-
-        await ctx.send(f'Hello master! {owouwu.gen()}')
-        
     @commands.check(cfg.isguild)
-    @commands.command(name='say', aliases=['copy', 'mimic'])
-    async def say_command(self, ctx, *, our_input: str):
-        """Says what you tell me to!"""
+    @commands.command(name='jumbo', aliases=['emote'])
+    async def enlarge_emote(self, ctx, emote: discord.PartialEmoji):
+        """Large emote"""
+        # inspired by gir's jumbo command
 
-        if '@' in our_input and '<' in our_input and '>' in our_input or '@everyone' in our_input or '@here' in our_input:
-            await ctx.send('I cannot mention users!', delete_after=5)
+        embed = discord.Embed(colour=0xFB98FB)
+        embed.set_image(url=emote.url)
+        embed.set_footer(text=f'Requested by {ctx.message.author.name}')
+        await ctx.send(embed=embed)
+        await ctx.message.delete()
+
+    @commands.check(cfg.isguild)
+    @commands.command(name='leo')
+    async def random_leo(self, ctx, *, option: str='s'):
+        """Sends a random *SFW* Leo pic, may or may not be lewd"""
+
+        if not option:
+            await ctx.send('Error: please specify an option, either s (sfw) or n (nsfw)', delete_after=5)
             return
 
-        if await filtercheck.breaks_filter(messagecontext(ctx.message)):
+        if option == 's':
+            leo_url = random.choice(swf_leo_urls)
+        elif option == 'n':
+            if not ctx.channel.is_nsfw():
+                await ctx.send('Error: the NSFW option may only be used in NSFW channels!', delete_after=5)
+                return
+            leo_url = random.choice(nsfw_leo_urls)
+        else:
+            await ctx.send('Error: please specify an option, either s (sfw) or n (nsfw)', delete_after=5)
             return
 
-        await ctx.send(our_input)
+        embed = discord.Embed(title='Random Leo pic', colour=0xFB98FB)
+        embed.set_image(url=leo_url)
+        embed.set_footer(text=f'Requested by {ctx.message.author.name}')
+        await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
-    @commands.command(name='stopbot', hidden=True)
-    @commands.is_owner()
-    async def shutdown(self, ctx):
-        """Shutdown"""
+    @commands.check(cfg.isguild)
+    @commands.command(name='neko')
+    async def random_neko(self, ctx):
+        """Sends a random neko pic"""
 
-        # log botevent
-        botevent_log = f'logs/botevent/botevent.log'
-        message = f'{str(datetime.now())} Shutting down!\n'
-        write_log_message(message, botevent_log)
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        request = Request(api_url, headers=headers)
+        url_content = urlopen(request).read()
+        image_url = json.loads(url_content)['url']
 
-        await ctx.send(f'Going to sleep! {owouwu.gen()}')
-        sys.exit()
-
-    @commands.command(name='status', hidden=True)
-    @commands.is_owner()
-    async def shutdown(self, ctx, *, status: str="catgirls"):
-        """Sets bot status"""
-
-        await cfg.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
+        embed = discord.Embed(title='Random neko pic', colour=0xFB98FB)
+        embed.set_image(url=image_url)
+        embed.set_footer(text=f'Requested by {ctx.message.author.name}')
+        await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
 # add cog
 def setup(bot):
-    bot.add_cog(Misc(bot))
+    bot.add_cog(Image(bot))

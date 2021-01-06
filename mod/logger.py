@@ -17,9 +17,12 @@ async def loggingEnabled(message) -> bool:
 
 def write_log_message(message, path):
     # open file and write 
-    f = open(path, 'a')
-    f.write(message)
-    f.close
+    try:
+        f = open(path, 'a')
+        f.write(message)
+        f.close
+    except:
+        pass
 
 # define log function
 async def logChatMessage(messagecontext):

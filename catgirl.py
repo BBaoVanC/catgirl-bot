@@ -28,7 +28,8 @@ cogs = [
     'cogs.moderation',
     'cogs.config',
     'cogs.messagetrack',
-    'cogs.misc'
+    'cogs.misc',
+    'cogs.image'
 ]
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
@@ -114,7 +115,7 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
     # log botevent
     botevent_log = f'logs/botevent/botevent.log'
-    message = f'Left the guild {guild.id} ({guild.name})!\n'
+    message = f'{str(datetime.now())} {cfg.bot.user} left the guild {guild.id} ({guild.name})!\n'
     write_log_message(message, botevent_log)
 
     print(f'\nLeft the guild {guild.id} ({guild.name})!\n')
