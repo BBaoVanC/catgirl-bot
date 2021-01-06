@@ -45,6 +45,8 @@ class Moderation(commands.Cog):
                 return False 
             return True
 
+        done = False
+
         # mentions
         if ctx.message.mentions:
             for mem in ctx.message.mentions:
@@ -91,6 +93,8 @@ class Moderation(commands.Cog):
                 return False
             return True
 
+        done = False
+
         # mentions
         if ctx.message.mentions:
             for mem in ctx.message.mentions:
@@ -130,6 +134,8 @@ class Moderation(commands.Cog):
                 await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
                 return False
             return True
+
+        done = False
 
         # mentions
         if ctx.message.mentions:

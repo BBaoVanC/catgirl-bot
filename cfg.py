@@ -37,8 +37,6 @@ async def hasperms(ctx):
             has_mod = True
 
     ret = user.guild_permissions.administrator or has_mod
-    if not ret:
-        await ctx.send(f'*Hisses at you.* You do not have permission to use this command!')
     return ret
 
 def isguild(ctx):
