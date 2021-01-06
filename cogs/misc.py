@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # misc.py
 # random assorted commands that don't fit into any category
-import discord, cfg, owouwu, filtercheck, random
+import discord, cfg, owouwu, filtercheck, random, json
+from urllib.request import Request, urlopen
 from  discord.ext import commands
 from context import messagecontext
+
+api_url = 'https://nekos.life/api/v2/img/neko'
 
 swf_leo_urls = [
     'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__8e96e4a2ccca4c473bd683787b306296.png',
@@ -103,6 +106,21 @@ class Misc(commands.Cog):
 
         embed = discord.Embed(title='Random Leo pic', colour=0xFB98FB)
         embed.set_image(url=leo_url)
+        embed.set_footer(text=f'Requested by {ctx.message.author.name}')
+        await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
+
+    @commands.check(cfg.isguild)
+    @commands.command(name='neko')
+    async def random_neko(self, ctx):
+        """Sends a random neko pic"""
+
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        request = Request(api_url, headers=headers)
+        url_content = urlopen(request).read()
+        image_url = json.loads(url_content)['url']
+
+        embed = discord.Embed(title='Random neko pic', colour=0xFB98FB)
+        embed.set_image(url=image_url)
         embed.set_footer(text=f'Requested by {ctx.message.author.name}')
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
 
