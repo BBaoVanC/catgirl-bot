@@ -33,30 +33,35 @@ class Moderation(commands.Cog):
 
         async def kick(mem) -> bool:
             try:
-                try:
-                    await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{reason}')
-                except:
-                    print(f'Failed to message member {mem.name}')
-                    await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
+                await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{reason}')
+            except:
+                print(f'Failed to message member {mem.name}')
+                await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
+
+            try:
                 await mem.kick()
             except:
                 print(f'Failed to kick member {mem.name}')
-                await ctx.send(f'Failed to kick member {mem.name}', delete_after=5)
+                await ctx.send(f'Failed to kick member {mem.name}, do I have the correct permission to do so?', delete_after=5)
                 return False 
             return True
 
         done = False
+        mem = None
 
         # mentions
         if ctx.message.mentions:
-            for mem in ctx.message.mentions:
-                # perform
-                done = await kick(mem)
+            mem = ctx.message.mentions[0]
         else:
             # tag
             if(is_integer(member)):
                 mem = await cfg.bot.fetch_user(int(member))
-                done = await kick(mem)
+
+        # perform
+        if mem != cfg.bot.user:
+            done = await kick(mem)
+        else:
+            await ctx.send(f'But... that\'s me...')
         
         if not done:
             return
@@ -80,34 +85,39 @@ class Moderation(commands.Cog):
 
         async def ban(mem) -> bool:
             try:
-                try:
-                    await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{reason}')
-                except:
-                    print(f'Failed to message member {mem.name}')
-                    await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
+                await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{reason}')
+            except:
+                print(f'Failed to message member {mem.name}')
+                await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
+
+            try:
                 await ctx.guild.ban(mem)
                 print(f'{mem.name} - {mem.id} was banned from {ctx.guild.name} - {ctx.guild.id}')
             except:
                 print(f'Failed to ban member {mem.name}')
-                await ctx.send(f'Failed to ban member {mem.name}', delete_after=5)
+                await ctx.send(f'Failed to ban member {mem.name}, do I have the correct permission to do so?', delete_after=5)
                 return False
             return True
 
         done = False
+        mem = None
 
         # mentions
         if ctx.message.mentions:
-            for mem in ctx.message.mentions:
-                # perform
-                done = await ban(mem)
+            mem = ctx.message.mentions[0]
         else:
             # tag
             if(is_integer(member)):
                 mem = await cfg.bot.fetch_user(int(member))
-                done = await ban(mem)
+
+        # perform
+        if mem != cfg.bot.user:
+            done = await ban(mem)
+        else:
+            await ctx.send(f'But... that\'s me...')
 
         if not done:
-                return
+            return
 
         await ctx.send(f'{owouwu.gen()}, 1 member banned', delete_after=5)
         print(f'1 member banned in {ctx.guild.id} ({ctx.guild.name})')
@@ -136,17 +146,21 @@ class Moderation(commands.Cog):
             return True
 
         done = False
+        mem = None
 
         # mentions
         if ctx.message.mentions:
-            for mem in ctx.message.mentions:
-                # perform
-                done = await warn(mem)
+            mem = ctx.message.mentions[0]
         else:
             # tag
             if(is_integer(member)):
                 mem = await cfg.bot.fetch_user(int(member))
-                done = await warn(mem)
+
+        # perform
+        if mem != cfg.bot.user:
+            done = await warn(mem)
+        else:
+            await ctx.send(f'But... that\'s me...')
 
         if not done:
             return
