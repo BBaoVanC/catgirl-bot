@@ -111,6 +111,10 @@ async def on_guild_join(guild):
 
     print(f'\nJoined the guild {guild.id} ({guild.name})!\n')
 
+    await guild.owner.send(f'Hello! Please make sure I have the permissions needed to send messages in your server, and to perform the commands you wish to use!')
+    await guild.owner.send(f'That means if you wish to use my moderation commands, you should give me permissions to kick/ban members and adjust their roles!')
+    await guild.owner.send(f'*If I do not have permissions to send messages in a channel, you will not get a warning, the output simply will not be sent.*')
+
 @cfg.bot.event
 async def on_guild_remove(guild):
     # log botevent
