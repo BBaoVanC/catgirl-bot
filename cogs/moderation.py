@@ -165,8 +165,13 @@ class Moderation(commands.Cog):
         if not num:
             await ctx.send(f'Usage: purge number', delete_after=5)
             return
-        messages = await ctx.channel.purge(limit=int(num))
-        await ctx.send(f'Deleted {len(messages)} message(s), {owouwu.gen()}', delete_after=5)
+
+        try:
+            messages = await ctx.channel.purge(limit=int(num))
+            await ctx.send(f'Deleted {len(messages)} message(s), {owouwu.gen()}', delete_after=5)
+        except:
+            await ctx.send(f'Could not purge messages, do I have permission to do so?', delete_after=5)
+
         print(f'{len(messages)} messages purged from {ctx.message.channel.name} in {ctx.guild.id} ({ctx.guild.name})')
 
     @commands.command(name='getlogs')
