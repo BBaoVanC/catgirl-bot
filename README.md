@@ -23,6 +23,7 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
     - Misc:
         - say/copy/mimic
         - jumbo/emote
+        - sayembed
     - Image:
         - neko
         - leo s/n

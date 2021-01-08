@@ -74,14 +74,20 @@ class Misc(commands.Cog):
 
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    @commands.command(name='rules')
-    async def send_rules(self, ctx, *, content: str):
-        """Sends a embed intended to be used in the server rules channel"""
+    @commands.command(name='sayembed')
+    async def send_embed(self, ctx, title: str, *content: str):
+        """Sends a embed with the given title and content. Intended for use by moderators in the rules channel."""
+
+        if not title:
+            ctx.send('Usage: sayembed title content', delete_after=5)
 
         if not content:
-            ctx.send('Error: You must provide text!', delete_after=5)
+            ctx.send('Usage: sayembed title content', delete_after=5)
 
-        embed = discord.Embed(description=content, title='Rules', colour=0xFB98FB)
+        # turn content from a list into a string
+        desc = ' '.join(content)
+
+        embed = discord.Embed(description=desc, title=title, colour=0xFB98FB)
 
         await ctx.send(embed=embed)
         await ctx.message.delete()
