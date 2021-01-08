@@ -60,22 +60,22 @@ class Misc(commands.Cog):
         
     @commands.check(cfg.isguild)
     @commands.command(name='say', aliases=['copy', 'mimic'])
-    async def say_command(self, ctx, *, our_input: str):
-        """Says what you tell me to!"""
+    async def say_command(self, ctx, *, message: str):
+        """Makes me say what you tell me to!"""
 
-        if '@' in our_input and '<' in our_input and '>' in our_input or '@everyone' in our_input or '@here' in our_input:
+        if '@' in message and '<' in message and '>' in message or '@everyone' in message or '@here' in message:
             await ctx.send('I cannot mention users!', delete_after=5)
             return
 
         if await filtercheck.breaks_filter(messagecontext(ctx.message)):
             return
 
-        await ctx.send(our_input)
+        await ctx.send(message)
 
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
     @commands.command(name='rules')
-    async def say_command(self, ctx, *, content: str):
+    async def send_rules(self, ctx, *, content: str):
         """Sends a embed intended to be used in the server rules channel"""
 
         if not content:

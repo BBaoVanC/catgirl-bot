@@ -21,14 +21,14 @@ class Moderation(commands.Cog):
     @commands.command(name='kick')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def kick(self, ctx, member=None, *reason_words):
+    async def kick(self, ctx, member=None, *reason):
         """Kick the mentioned member"""
 
         reason = ""
-        if len(reason_words) == 0:
+        if len(reason) == 0:
             reason = ' No reason'
         else:
-            for word in reason_words:
+            for word in reason:
                 reason = f'{reason} {word}'
 
         async def kick(mem) -> bool:
@@ -73,14 +73,14 @@ class Moderation(commands.Cog):
     @commands.command(name='ban')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def ban(self, ctx, member=None, *reason_words):
+    async def ban(self, ctx, member=None, *reason):
         """Ban the mentioned member"""
 
         reason = ""
-        if len(reason_words) == 0:
+        if len(reason) == 0:
             reason = ' No reason'
         else:
-            for word in reason_words:
+            for word in reason:
                 reason = f'{reason} {word}'
 
         async def ban(mem) -> bool:
@@ -126,14 +126,14 @@ class Moderation(commands.Cog):
     @commands.command(name='warn')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
-    async def warn(self, ctx, member=None, *reason_words):
+    async def warn(self, ctx, member=None, *reason):
         """Warn the mentioned member"""
 
         reason = ""
-        if len(reason_words) == 0:
+        if len(reason) == 0:
             reason = ' No reason'
         else:
-            for word in reason_words:
+            for word in reason:
                 reason = f'{reason} {word}'
 
         async def warn(mem) -> bool:
