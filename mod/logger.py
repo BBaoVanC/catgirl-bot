@@ -3,7 +3,7 @@
 # log stuff to files
 from context import messagecontext
 from filemanager import make_dir_if_needed
-import os, settings, discord
+import os, settings, discord, cfg
 
 async def loggingEnabled(message) -> bool:
     enabled = True
@@ -24,6 +24,10 @@ def write_log_message(message, path):
         pass
 
 async def send_discord_log_message(messagecontext, log_dict, title):
+
+    if messagecontext.author() == cfg.bot.user:
+        return
+
     guild_id = messagecontext.guild_id()
 
     logchannel = settings.get_integer_value(guild_id, 'logchannel')
