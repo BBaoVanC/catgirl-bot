@@ -72,6 +72,20 @@ class Misc(commands.Cog):
 
         await ctx.send(our_input)
 
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
+    @commands.command(name='rules')
+    async def say_command(self, ctx, *, content: str):
+        """Sends a embed intended to be used in the server rules channel"""
+
+        if not content:
+            ctx.send('Error: You must provide text!', delete_after=5)
+
+        embed = discord.Embed(description=content, title='Rules', colour=0xFB98FB)
+
+        await ctx.send(embed=embed)
+        await ctx.message.delete()
+
     @commands.command(name='stopbot', hidden=True)
     @commands.is_owner()
     async def shutdown(self, ctx):
