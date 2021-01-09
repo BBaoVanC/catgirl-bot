@@ -32,6 +32,7 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
         - modrole
         - logging yes/no
         - logchannel
+        - reactions yes/no
 
 - Tracks message edits/deletion, and sends to the channel with the id set in the logchannel command
 - Logs all messages sent (can be downloaded by moderators with the getlogs command)

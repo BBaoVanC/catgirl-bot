@@ -11,18 +11,30 @@ def default_config() -> dict:
         'prefix' : '?',
         'loggingEnabled' : 'yes',
         'modrole' : '1', # same here
-        'logchannel' : '1'
+        'logchannel' : '1',
+        'reactions' : 'yes'
     }
 
 def get_value(section, key) -> object:
-    return cfg.config[str(section)][str(key)]
+    try:
+        return cfg.config[str(section)][str(key)]
+    except:
+        # return nothing
+        return None
 
 # just to make it look nicer in other files
 def get_integer_value(section, key) -> int:
-    return int(get_value(section, key))
+    try:
+        return int(get_value(section, key))
+    except:
+        # default to 1
+        return 1
 
-def get_boolean_value(section, key) -> bool:
-    return cfg.config.getboolean(str(section), str(key))
+def get_boolean_value(section, key, default) -> bool:
+    try:
+        return cfg.config.getboolean(str(section), str(key))
+    except:
+        return default
 
 def save_config():
     file = open(f'config/bot/settings.ini', 'w')

@@ -82,12 +82,36 @@ class Config(commands.Cog):
         try:
             settings.save_config()
             
-            await ctx.send(f'Logging set to {option}", {owouwu.gen()}')
+            await ctx.send(f'Logging set to "{option}", {owouwu.gen()}')
             print(f'Logging for guild {ctx.guild.name} - {guild_id} set to "{option}", {owouwu.gen()}')
             await ctx.message.add_reaction('✅')
         except:
             await ctx.send(f'Command failed to execute', delete_after=5)
 
+
+    # set reactions on/off
+    @commands.command(name='reactions')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
+    async def set_reactions(self, ctx, *, option: str):
+        """Set bot auto reactions yes/no"""
+
+        guild_id = ctx.guild.id
+
+        if not option or (option != 'yes' and option != 'no'):
+            await ctx.send(f'Usage: reactions yes/no', delete_after=5)
+            return
+
+        settings.set_value(guild_id, 'reactions', option)
+
+        try:
+            settings.save_config()
+            
+            await ctx.send(f'Reactions set to "{option}", {owouwu.gen()}')
+            print(f'Reactions for guild {ctx.guild.name} - {guild_id} set to "{option}", {owouwu.gen()}')
+            await ctx.message.add_reaction('✅')
+        except:
+            await ctx.send(f'Command failed to execute', delete_after=5)
 
     # set channel to send logs to
     @commands.command(name='logchannel')
@@ -107,7 +131,7 @@ class Config(commands.Cog):
                 settings.set_value(guild_id, 'logchannel', channel_id)
                 settings.save_config()
 
-                await ctx.send(f'Logging channel set to {channel_id}", {owouwu.gen()}')
+                await ctx.send(f'Logging channel set to "{channel_id}", {owouwu.gen()}')
                 print(f'Logging channel for guild {ctx.guild.name} - {guild_id} set to "{channel_id}", {owouwu.gen()}')
                 await ctx.message.add_reaction('✅')
         except:

@@ -12,30 +12,25 @@ async def checkMessage(messagecontext):
     words = messagecontext.message_words()
     message = messagecontext.message
     lowered_content = message.content.lower()
-    
-    # react to these terms
-    if 'catgirl' in lowered_content or 'neko' in lowered_content or 'sex' in lowered_content:
-        await message.add_reaction('<:wooaaahhh:789297106837569557>') #wooaaahhh
-    
-    # pedo. search for individual words
-    if ('cp' in words) or ('child' in words and 'porn' in words):
-        try:
-            await messagecontext.message.delete()
-            await messagecontext.message.author.kick()
-            await messagecontext.channel().send(f'{message.author.name} has been kicked for being a literal pedo')
-        except:
-            print(f'Error kicking user {message.author.name} from {messagecontext.guild().name}! Does bot have correct permissions to kick this user?')
 
-    # gm gn reacts
-    if 'gm' in words or 'gn' in words:
-        if 'gm' in words:
-            await message.add_reaction('<:catgm:782652523462393918>')
-        if 'gn' in words:
-            await message.add_reaction('<:catgn:782652492847775794>')
+    # reactions
+    if settings.get_boolean_value(messagecontext.guild_id(), 'reactions', True):
     
-    if 'i love you' in lowered_content:
-        await message.add_reaction('<:love:794076402945228811>')
+        # react to these terms
+        if 'catgirl' in lowered_content or 'neko' in lowered_content or 'sex' in lowered_content:
+            await message.add_reaction('<:wooaaahhh:789297106837569557>') #wooaaahhh
 
+        # gm gn reacts
+        if 'gm' in words or 'gn' in words:
+            if 'gm' in words:
+                await message.add_reaction('<:catgm:782652523462393918>')
+            if 'gn' in words:
+                await message.add_reaction('<:catgn:782652492847775794>')
+        
+        if 'i love you' in lowered_content:
+            await message.add_reaction('<:love:794076402945228811>')
+
+    # respond to pings
     if cfg.bot.user in message.mentions:
         await message.channel.send(owouwu.gen())
 

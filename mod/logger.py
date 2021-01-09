@@ -6,13 +6,7 @@ from filemanager import make_dir_if_needed
 import os, settings, discord, cfg
 
 async def loggingEnabled(message) -> bool:
-    enabled = True
-    try:
-        enabled = settings.get_boolean_value(message.channel.guild.id, 'loggingEnabled')
-    except:
-        pass
-
-    return enabled
+    return settings.get_boolean_value(message.channel.guild.id, 'loggingEnabled', True)
 
 def write_log_message(message, path):
     # open file and write 
