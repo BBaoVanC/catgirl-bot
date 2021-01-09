@@ -41,11 +41,8 @@ async def checkMessage(messagecontext):
 
     # check filters
     # exempt users with no filter role
-    #try:
-        if messagecontext.guild().get_role(settings.get_integer_value(messagecontext.guild_id(), 'filterrole')) in message.author.roles:
-            return
-    #except:
-    #    await messagecontext.channel().send('No filter role is not set! Please set nofilter role with filterrole command!')
+    if messagecontext.guild().get_role(settings.get_integer_value(messagecontext.guild_id(), 'filterrole')) in message.author.roles:
+        return
 
     filtered = await breaks_filter(messagecontext)
     if filtered:

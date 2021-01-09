@@ -80,12 +80,13 @@ class Misc(commands.Cog):
 
         if not title:
             await ctx.send('Usage: sayembed title content', delete_after=5)
+            return
 
-        if not content:
-            await ctx.send('Usage: sayembed title content', delete_after=5)
-
-        # turn content from a list into a string
-        desc = ' '.join(content)
+        if content:
+            # turn content from a list into a string
+            desc = ' '.join(content)
+        else:
+            desc = ''
 
         embed = discord.Embed(description=desc, title=title, colour=0xFB98FB)
 

@@ -41,7 +41,9 @@ nsfw_leo_urls = [
     'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__0b082db94f59ceb7a300ade32e89b8c4.png',
     'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__b09199ab4c8c2794ada13bc1fef2d1ce.png',
     'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__60c0ee117674880e7cfbf25e9ab0aec4.png',
-    'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__ff139dedc4429cdaf7327ba33f060432.png'
+    'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__ff139dedc4429cdaf7327ba33f060432.png',
+    'https://danbooru.donmai.us/data/__leo_original_drawn_by_mafuyu_chibi21__c5dd8e7944321b023f090de3f5c5d1c0.png'
+
 ]
 
 class Image(commands.Cog):
