@@ -79,10 +79,10 @@ class Misc(commands.Cog):
         """Sends a embed with the given title and content. Intended for use by moderators in the rules channel."""
 
         if not title:
-            ctx.send('Usage: sayembed title content', delete_after=5)
+            await ctx.send('Usage: sayembed title content', delete_after=5)
 
         if not content:
-            ctx.send('Usage: sayembed title content', delete_after=5)
+            await ctx.send('Usage: sayembed title content', delete_after=5)
 
         # turn content from a list into a string
         desc = ' '.join(content)

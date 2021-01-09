@@ -29,15 +29,15 @@ async def send_discord_log_message(messagecontext, log_dict, title):
         return
 
     guild_id = messagecontext.guild_id()
+    pfp_url = messagecontext.author().avatar_url
 
-    logchannel = settings.get_integer_value(guild_id, 'logchannel')
-
-    channel = messagecontext.guild().get_channel(logchannel)
+    channel_id = settings.get_integer_value(guild_id, 'logchannel')
+    channel = messagecontext.guild().get_channel(channel_id)
 
     embed_wrapper = discord.Embed(colour=0xFB98FB)
     embed_wrapper.set_author(name=title,
                         url='https://github.com/Burrit0z/catgirl-bot',
-                        icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
+                        icon_url=pfp_url)
     
     for key in log_dict.keys():
         embed_wrapper.add_field(name=key, value=log_dict[key], inline=False)
