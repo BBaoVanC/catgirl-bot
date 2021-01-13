@@ -10,7 +10,6 @@ class MessageTrack(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print('Cog "MessageTrack" loaded')
 
     @commands.Cog.listener()
     async def on_message_edit(self, oldmessage, newmessage):

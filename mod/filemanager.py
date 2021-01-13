@@ -44,13 +44,10 @@ def setup_guilds_config(guilds):
 
         # if config for guild not existing, create
         if not str(guild.id) in cfg.config.sections():
-            print(f'Config does not exist for guild {guild.id} ({guild.name}), creating')
             cfg.config[guild.id] = settings.default_config()
 
             # write changes
             settings.save_config()
-        else:
-            print(f'Config exists for guild {guild.id} ({guild.name})')
         
         # make logs for each guild
         make_dir_if_needed(f'logs/guilds/{guild.id}')

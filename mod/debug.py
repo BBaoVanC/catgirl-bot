@@ -16,6 +16,10 @@ async def track_memory_loop():
     # forever. the function will never return and
     # the run_until_complete will run forever
     while True:
+        # delay, placed first as to not
+        # output useless info on launch
+        await asyncio.sleep(3600)
+
         # now, this does not execute every hour.
         # it executes with a delay of 1 hour,
         # after execution is finished. if i wanted
@@ -24,9 +28,6 @@ async def track_memory_loop():
         snapshot = tracemalloc.take_snapshot()
         bytes = get_bytes()
         log_changes(snapshot, bytes)
-
-        # delay
-        await asyncio.sleep(3600)
 
 def snap():
     snapshot = tracemalloc.take_snapshot()
@@ -58,6 +59,8 @@ def get_bytes() -> int:
     return psutil.Process(os.getpid()).memory_info().rss
 
 def loop_init():
+
+    print(f'Started debug thread! Thread name: {threading.current_thread().name}')
 
     # create a new loop for our thread because
     # by default there isn't an event loop

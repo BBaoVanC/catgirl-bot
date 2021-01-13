@@ -10,13 +10,13 @@ load_dotenv()
 
 # cog list
 cogs = [
-    'cogs.info',
-    'cogs.filter',
-    'cogs.moderation',
-    'cogs.config',
-    'cogs.messagetrack',
-    'cogs.misc',
-    'cogs.image'
+    'info',
+    'filter',
+    'moderation',
+    'config',
+    'messagetrack',
+    'misc',
+    'image'
 ]
 
 # config

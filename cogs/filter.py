@@ -11,7 +11,6 @@ class Filter(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print('Cog "Filter" loaded')
 
     @commands.command(name='filter')
     @commands.check(cfg.isguild)

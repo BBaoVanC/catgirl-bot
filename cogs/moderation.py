@@ -16,7 +16,6 @@ class Moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print('Cog "Moderation" loaded')
 
     @commands.command(name='kick')
     @commands.check(cfg.isguild)

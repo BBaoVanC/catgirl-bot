@@ -19,7 +19,6 @@ class Info(commands.Cog):
         self.bot = bot
         self.cooldown = cooldown(2)
         load_dotenv()
-        print('Cog "Info" loaded')
 
     # link source code (that's this!!!)
     @commands.command(name='github', aliases=['source', 'sourcecode'])

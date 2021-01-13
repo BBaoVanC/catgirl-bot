@@ -52,7 +52,6 @@ class Image(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.cooldown = cooldown(2)
-        print('Cog "Image" loaded')
 
     @commands.check(cfg.isguild)
     @commands.command(name='jumbo', aliases=['emote'])

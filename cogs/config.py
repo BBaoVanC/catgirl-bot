@@ -9,7 +9,6 @@ class Config(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print('Cog "Config" loaded')
 
     # set prefix
     @commands.command(name='prefix')

@@ -5,10 +5,10 @@ import discord, sys, os
 
 # check versions before continuing
 if sys.version_info[0] < 3:
-    raise Exception("Python 3 or higher is required for this bot! Recommended version: 3.9.1")
+    raise Exception('Python 3 or higher is required for this bot! Recommended version: 3.9.1')
 
 if int(discord.__version__[2]) < 5:
-	raise Exception("Discord.py 1.5.0 or higher is required for this bot! Recommended version: 1.5.1")
+	raise Exception('Discord.py 1.5.0 or higher is required for this bot! Recommended version: 1.5.1')
 
 sys.path.insert(1, 'mod')
 sys.path.insert(1, 'data')
@@ -24,13 +24,14 @@ load_dotenv()
 if __name__ == '__main__':
 
     print(f'Loading {len(cfg.cogs)} cogs!')
-    for extension in cfg.cogs:
-        cfg.bot.load_extension(extension)
+
+    for extension_name in cfg.cogs:
+        cfg.bot.load_extension(f'cogs.{extension_name}')
+    print(f'Loaded cogs: {", ".join(cfg.cogs)}')
 
     if os.getenv('DEBUG') == 'yes':
         print('') # newline
-        print('DEBUG IS ENABLED')
-        print('Starting debug thread!')
+        print('Debug is enabled, spawning debug thread...')
         spawn_debug_thread()
         
     print('') # newline
@@ -59,9 +60,8 @@ async def on_ready():
     message = f'{str(datetime.now())} {cfg.bot.user} is now online in {len(cfg.bot.guilds)} guilds!\n'
     write_log_message(message, botevent_log)
 
-    print(f'Successfully logged in and booted!')
     print(f'{cfg.bot.user} is now online in {len(cfg.bot.guilds)} guilds!')
-    print(f'Bot is ready!')
+    print(f'Bot is ready to process commands! Current ping: {round(cfg.bot.latency * 1000, 2)}ms')
     print('') # newline
 
 @cfg.bot.event
