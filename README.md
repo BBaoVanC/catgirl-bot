@@ -38,6 +38,9 @@ A (WIP) basic open-source discord bot containing tools for filtering specific wo
 - Logs all messages sent (can be downloaded by moderators with the getlogs command)
 - Reacts to messages containing specific content (try "neko" or "catgirl", as well as "gm" and "gn")
 
+## Debug mode:
+You may enable debug mode by setting DEBUG to yes in your .env file. This will give you access to the `takesnap` command (only useable by bot owner), which will take a snapshot of python's currently used memory, and log some output to console. It adds thread count and current thread info to the `sysinfo` command. Not intended for normal use, as the name suggests, it's for debugging
+
 ## Dependencies (pip install these):
     - psutil
     - python_env

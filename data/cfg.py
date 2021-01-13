@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # cfg.py
 # variables that need to be accesed globally, as well as command check function defs
-import configparser
-import discord
+import discord, configparser, os
 from discord import DMChannel
 from discord.ext import commands
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # cog list
 cogs = [
@@ -51,8 +53,14 @@ async def hasperms(ctx):
 
 
 # are we in a guild?
-def isguild(ctx):
+async def isguild(ctx):
     return (not isinstance(ctx.message.channel, DMChannel))
+
+async def debug_enabled(ctx):
+    if os.getenv('DEBUG') == 'yes':
+        return True
+    else:
+        return False
 
 # setup intents
 intents = discord.Intents.all()
