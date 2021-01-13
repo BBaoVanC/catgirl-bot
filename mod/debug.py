@@ -3,9 +3,11 @@
 # clyde
 import tracemalloc, asyncio, threading
 
-async def do_loop():
+async def track_memory_loop():
     last_snapshot = tracemalloc.take_snapshot()
 
+    # forever. the function will never return and
+    # the run_until_complete will run forever
     while True:
         print('')
         snapshot = tracemalloc.take_snapshot()
@@ -23,20 +25,27 @@ async def do_loop():
 
 def loop_init():
 
-    # create a new event loop for our thread
+    # create a new loop for our thread because
+    # by default there isn't an event loop
+    # we also have to set the thread's event
+    # loop to the loop we just created
     event_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(event_loop)
 
     # create tasks and start on the event loop
-    tasks = list()
-    tasks.append(event_loop.create_task(do_loop()))
+    # note that this is a list object
+    tasks = [event_loop.create_task(track_memory_loop())]
+
+    # run the task. will never be completed.
     event_loop.run_until_complete(asyncio.wait(tasks))
 
-def start_run_loop():
+def spawn_debug_thread():
     # start tracking memory
     tracemalloc.start()
 
     # create new thread and set it as a daemon
+    # set thread target as the loop_init method so
+    # that it gets executed on the new thread
     thread = threading.Thread(target=loop_init, args=())
     thread.daemon = True
     thread.start()

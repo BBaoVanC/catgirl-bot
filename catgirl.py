@@ -14,7 +14,7 @@ sys.path.insert(1, 'mod')
 sys.path.insert(1, 'data')
 import cfg, settings, filemanager
 from logger import write_log_message
-from debug import start_run_loop
+from debug import spawn_debug_thread
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
         print('') # newline
         print('DEBUG IS ENABLED')
         print('Starting debug thread!')
-        start_run_loop()
+        spawn_debug_thread()
         
     print('') # newline
 
@@ -67,8 +67,7 @@ async def on_ready():
 @cfg.bot.event
 async def on_guild_join(guild):
     # setup the guild files
-    new_guild_list = list()
-    new_guild_list.append(guild)
+    new_guild_list = [guild]
     filemanager.setup_guilds_config(new_guild_list)
 
     # log botevent
