@@ -18,6 +18,7 @@ sys.path.insert(1, 'data')
 from logger import write_log_message
 from filemanager import make_dir_if_needed
 import cfg, settings
+from debug import start_run_loop
 
 load_dotenv()
 
@@ -34,11 +35,17 @@ cogs = [
 
 # Here we load our extensions(cogs) listed above in [initial_extensions].
 if __name__ == '__main__':
-    print(f'Loading {len(cogs)} cogs!')
 
+    print(f'Loading {len(cogs)} cogs!')
     for extension in cogs:
         cfg.bot.load_extension(extension)
-    
+
+    if os.getenv('DEBUG') == 'yes':
+        print('') # newline
+        print('DEBUG IS ENABLED')
+        print('Starting debug thread!')
+        start_run_loop()
+        
     print('') # newline
 
 async def connected():

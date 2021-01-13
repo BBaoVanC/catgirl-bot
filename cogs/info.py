@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # info.py
 # basic commands for information related to the bot and system
-import discord, cfg, os, sys, time, owouwu
+import discord, cfg, os, sys, threading, time, owouwu
 from discord.ext import commands
 from discord.utils import oauth_url
 from dotenv import load_dotenv
 from timeformat import format_time
-from psutil import virtual_memory
+from psutil import virtual_memory, cpu_percent
 from cooldown import cooldown
 
 # start a stopwatch of sorts
@@ -118,6 +118,8 @@ class Info(commands.Cog):
         self.cooldown.was_used(ctx.guild.id)
         
         memory = virtual_memory()
+        vi = sys.version_info
+        combined_version = f'{vi.major}.{vi.minor}.{vi.micro}'
 
         def rounded_gb(bytes) -> int:
             return round(bytes/1073741824, 1)
@@ -126,15 +128,16 @@ class Info(commands.Cog):
         embed.set_author(name=f'Catgirl Bot - System info',
                          url='https://github.com/Burrit0z/catgirl-bot',
                          icon_url='https://avatars0.githubusercontent.com/u/57574731?s=500')
-        embed.add_field(name="Python version", value=sys.version, inline=False)
-        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=False)
-        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=False)
-        embed.add_field(name="Total Memory", value=f'{rounded_gb(memory.total)}GiB', inline=False)
-        embed.add_field(name="Memory Used", value=f'{rounded_gb(memory.used)}GiB ({memory.percent}%)', inline=False)
-        embed.add_field(name="Free Memory", value=f'{rounded_gb(memory.free)}GiB', inline=False)
+        embed.add_field(name="Python version", value=combined_version, inline=True)
+        embed.add_field(name="Uptime", value=format_time(time.time() - boot_time), inline=True)
+        embed.add_field(name="Ping", value=f'{round(cfg.bot.latency * 1000, 2)}ms', inline=True)
+        embed.add_field(name="Total Memory", value=f'{rounded_gb(memory.total)}GiB', inline=True)
+        embed.add_field(name="Memory Used", value=f'{rounded_gb(memory.used)}GiB ({memory.percent}%)', inline=True)
+        embed.add_field(name="Free Memory", value=f'{rounded_gb(memory.free)}GiB', inline=True)
+        embed.add_field(name="CPU Used", value=f'{round(cpu_percent(interval=1), 2)}%', inline=True)
+        embed.add_field(name="Bot Active Threads", value=threading.active_count(), inline=True)
 
         await ctx.send(content=f'Here you go {owouwu.gen()}', embed=embed)
-
     # just uptime
     @commands.command(name='uptime')
     async def send_uptime(self, ctx):
