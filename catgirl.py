@@ -10,34 +10,21 @@ if sys.version_info[0] < 3:
 if int(discord.__version__[2]) < 5:
 	raise Exception("Discord.py 1.5.0 or higher is required for this bot! Recommended version: 1.5.1")
 
+sys.path.insert(1, 'mod')
+sys.path.insert(1, 'data')
+import cfg, settings, filemanager
+from logger import write_log_message
+from debug import start_run_loop
 from datetime import datetime
 from dotenv import load_dotenv
 
-sys.path.insert(1, 'mod')
-sys.path.insert(1, 'data')
-from logger import write_log_message
-from filemanager import make_dir_if_needed
-import cfg, settings
-from debug import start_run_loop
-
 load_dotenv()
 
-# cog list
-cogs = [
-    'cogs.info',
-    'cogs.filter',
-    'cogs.moderation',
-    'cogs.config',
-    'cogs.messagetrack',
-    'cogs.misc',
-    'cogs.image'
-]
-
-# Here we load our extensions(cogs) listed above in [initial_extensions].
+# Here we load our extensions(cogs) listed in cfg.
 if __name__ == '__main__':
 
-    print(f'Loading {len(cogs)} cogs!')
-    for extension in cogs:
+    print(f'Loading {len(cfg.cogs)} cogs!')
+    for extension in cfg.cogs:
         cfg.bot.load_extension(extension)
 
     if os.getenv('DEBUG') == 'yes':
@@ -50,47 +37,18 @@ if __name__ == '__main__':
 
 async def connected():
 
-    # log folder
-    make_dir_if_needed('tmp')
-    make_dir_if_needed('logs')
-    make_dir_if_needed('logs/botevent')
-    make_dir_if_needed('logs/guilds')
+    # setup the directories we need
+    filemanager.make_initial_dirs()
 
     # read config file once
     if os.path.exists(f'config/bot/settings.ini'):
         cfg.config.read(f'config/bot/settings.ini')
 
-    # setup for each guild
-    for guild in cfg.bot.guilds:
-        if guild.name == None:
-            return
-
-        # does file exist?
-        if os.path.exists(f'config/bot/settings.ini'):
-
-            # if config for guild not existing, create
-            if not str(guild.id) in cfg.config.sections():
-                print(f'Config does not exist for guild {guild.id} ({guild.name}), creating')
-                cfg.config[guild.id] = settings.default_config()
-
-                # write changes
-                settings.save_config()
-            else:
-                print(f'Config exists for guild {guild.id} ({guild.name})')
-        else:
-            # create
-            print(f'Main config file does not exist, creating')
-            cfg.config[guild.id] = settings.default_config()
-
-            make_dir_if_needed(f'config')
-            make_dir_if_needed(f'config/bot')
-            settings.save_config()
-        
-        # make logs for each guild
-        make_dir_if_needed(f'logs/guilds/{guild.id}')
+    filemanager.setup_guilds_config(cfg.bot.guilds)
 
 @cfg.bot.event
 async def on_ready():
+    # bot is completely connected and ready to process commands
     print(f'{cfg.bot.user} has logged in to Discord!')
     await cfg.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="catgirls"))
 
@@ -108,8 +66,10 @@ async def on_ready():
 
 @cfg.bot.event
 async def on_guild_join(guild):
-    # force reload config and logs
-    await connected()
+    # setup the guild files
+    new_guild_list = list()
+    new_guild_list.append(guild)
+    filemanager.setup_guilds_config(new_guild_list)
 
     # log botevent
     botevent_log = f'logs/botevent/botevent.log'
@@ -131,4 +91,6 @@ async def on_guild_remove(guild):
 
     print(f'\nLeft the guild {guild.id} ({guild.name})!\n')
 
+
+# run actual bot
 cfg.bot.run(os.getenv('DISCORD_TOKEN'), bot=True, reconnect=True)
