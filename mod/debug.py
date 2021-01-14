@@ -43,9 +43,10 @@ def log_changes(new_snap, current_bytes):
     changes = new_snap.compare_to(last_snapshot, 'lineno')
 
     print(f'[Memory tracking - Changes - Call Thread {threading.current_thread().name}]')
-    
+
     # current bytes minus old bytes to get the change
-    print(f'Change in memory usage: {(current_bytes - old_bytes) / 1000} kb')
+    print(f'Change in memory usage: {(current_bytes - old_bytes) / 1024} KiB')
+    print(f'Current memory usage: {current_bytes / 1024} KiB')
 
     # enumerate through changes list and print top 10
     for stat in changes[:10]:
