@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # messagetrack.py
 # track changes in existing messages and log them
-import discord, logger
+import discord, logger, filtercheck
 from discord.ext import commands
 from context import messagecontext
 
@@ -19,6 +19,7 @@ class MessageTrack(commands.Cog):
         # get guild
         guild = old_context.guild()
         if guild:
+            await filtercheck.checkMessage(new_context)
             await logger.logMessagedAltered(old_context, new_context)
 
     @commands.Cog.listener()

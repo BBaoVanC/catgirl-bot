@@ -18,21 +18,24 @@ async def track_memory_loop():
     while True:
         # delay, placed first as to not
         # output useless info on launch
-        await asyncio.sleep(3600)
+        await asyncio.sleep(10)
 
         # now, this does not execute every hour.
         # it executes with a delay of 1 hour,
         # after execution is finished. if i wanted
         # a perfect hour i could track execution time.
 
-        snapshot = tracemalloc.take_snapshot()
-        bytes = get_bytes()
-        log_changes(snapshot, bytes)
+        snap()
 
 def snap():
     snapshot = tracemalloc.take_snapshot()
     bytes = get_bytes()
     log_changes(snapshot, bytes)
+
+    # basically just clears history of snapshots
+    # if they aren't saved
+    tracemalloc.stop()
+    tracemalloc.start()
 
 def log_changes(new_snap, current_bytes):
     global old_bytes
