@@ -18,7 +18,7 @@ async def track_memory_loop():
     while True:
         # delay, placed first as to not
         # output useless info on launch
-        await asyncio.sleep(10)
+        await asyncio.sleep(3600)
 
         # now, this does not execute every hour.
         # it executes with a delay of 1 hour,
