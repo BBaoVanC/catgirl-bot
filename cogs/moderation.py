@@ -3,6 +3,8 @@
 # basic moderation commands
 import discord, cfg, owouwu, filemanager, os
 from discord.ext import commands
+from logger import send_discord_mod_log_message
+from context import messagecontext
 
 def is_integer(str):
     try: 
@@ -22,23 +24,29 @@ class Moderation(commands.Cog):
     @commands.check(cfg.hasperms)
     async def kick(self, ctx, member=None, *reason):
         """Kick the mentioned member"""
-
-        reason = ""
+        
+        finalizedReason = ''
         if len(reason) == 0:
-            reason = ' No reason'
+            finalizedReason = 'No reason'
         else:
             for word in reason:
-                reason = f'{reason} {word}'
+                finalizedReason = f'{finalizedReason} {word}'
 
         async def kick(mem) -> bool:
             try:
-                await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{reason}')
+                await mem.send(f'{owouwu.gen()}, you have been kicked from {ctx.guild.name} for reason:{finalizedReason}')
             except:
                 print(f'Failed to message member {mem.name}')
                 await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
 
             try:
                 await mem.kick()
+                discord_message = {
+                    'User' : mem.name,
+                    'Reason' : finalizedReason,
+                    'Moderator' : ctx.message.author
+                }
+                await send_discord_mod_log_message(messagecontext(ctx.message), mem, discord_message,'Member kicked')
             except:
                 print(f'Failed to kick member {mem.name}')
                 await ctx.send(f'Failed to kick member {mem.name}, do I have the correct permission to do so?', delete_after=5)
@@ -75,23 +83,29 @@ class Moderation(commands.Cog):
     async def ban(self, ctx, member=None, *reason):
         """Ban the mentioned member"""
 
-        reason = ""
+        finalizedReason = ''
         if len(reason) == 0:
-            reason = ' No reason'
+            finalizedReason = 'No reason'
         else:
             for word in reason:
-                reason = f'{reason} {word}'
+                finalizedReason = f'{finalizedReason} {word}'
 
         async def ban(mem) -> bool:
             try:
-                await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{reason}')
+                await mem.send(f'{owouwu.gen()}, you have been banned from {ctx.guild.name} for reason:{finalizedReason}')
             except:
                 print(f'Failed to message member {mem.name}')
                 await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
 
             try:
-                await ctx.guild.ban(mem)
+                await ctx.guild.ban(mem, reason=finalizedReason)
                 print(f'{mem.name} - {mem.id} was banned from {ctx.guild.name} - {ctx.guild.id}')
+                discord_message = {
+                    'User' : mem.name,
+                    'Reason' : finalizedReason,
+                    'Moderator' : ctx.message.author
+                }
+                await send_discord_mod_log_message(messagecontext(ctx.message), mem, discord_message,'Member banned')
             except:
                 print(f'Failed to ban member {mem.name}')
                 await ctx.send(f'Failed to ban member {mem.name}, do I have the correct permission to do so?', delete_after=5)
@@ -128,16 +142,22 @@ class Moderation(commands.Cog):
     async def warn(self, ctx, member=None, *reason):
         """Warn the mentioned member"""
 
-        reason = ""
+        finalizedReason = ''
         if len(reason) == 0:
-            reason = ' No reason'
+            finalizedReason = 'No reason'
         else:
             for word in reason:
-                reason = f'{reason} {word}'
+                finalizedReason = f'{finalizedReason} {word}'
 
         async def warn(mem) -> bool:
             try:
-                await mem.send(f'{owouwu.gen()}, you have been warned from the moderators of {ctx.guild.name} for reason:{reason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
+                await mem.send(f'{owouwu.gen()}, you have been warned from the moderators of {ctx.guild.name} for reason:{finalizedReason}. \n\nIf you continue to break the rules, you may be kicked or banned.')
+                discord_message = {
+                    'User' : mem.name,
+                    'Reason' : finalizedReason,
+                    'Moderator' : ctx.message.author
+                }
+                await send_discord_mod_log_message(messagecontext(ctx.message), mem, discord_message,'Member warned')
             except:
                 print(f'Failed to message member {mem.name}')
                 await ctx.send(f'Failed to message member {mem.name}', delete_after=5)

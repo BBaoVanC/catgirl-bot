@@ -42,6 +42,31 @@ async def send_discord_log_message(messagecontext, log_dict, title):
     except:
         pass
 
+async def send_discord_mod_log_message(messagecontext, target_member, log_dict, title):
+
+    if messagecontext.author() == cfg.bot.user:
+        return
+
+    guild_id = messagecontext.guild_id()
+    pfp_url = target_member.avatar_url
+
+    channel_id = settings.get_integer_value(guild_id, 'logchannel')
+    channel = messagecontext.guild().get_channel(channel_id)
+
+    embed_wrapper = discord.Embed(colour=0xFB98FB)
+    embed_wrapper.set_author(name=title,
+                        url='https://github.com/Burrit0z/catgirl-bot',
+                        icon_url=pfp_url)
+    
+    for key in log_dict.keys():
+        embed_wrapper.add_field(name=key, value=log_dict[key], inline=False)
+
+
+    try:
+        await channel.send(embed=embed_wrapper)
+    except:
+        pass
+
 # define log function
 async def logChatMessage(messagecontext):
 
