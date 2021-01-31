@@ -2,7 +2,7 @@
 # filemanager.py
 # handles files n shit
 # iirc shutil is python 3 only
-import os, shutil, cfg
+import os, shutil, cfg, settings
 
 def make_dir_if_needed(path):
     # this does not need a comment
