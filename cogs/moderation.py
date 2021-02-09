@@ -136,6 +136,65 @@ class Moderation(commands.Cog):
         print(f'1 member banned in {ctx.guild.id} ({ctx.guild.name})')
         await ctx.message.add_reaction('✅')
 
+    @commands.command(name='unban')
+    @commands.check(cfg.isguild)
+    @commands.check(cfg.hasperms)
+    async def unban(self, ctx, member=None, *reason):
+        """Unban the mentioned member"""
+
+        finalizedReason = ''
+        if len(reason) == 0:
+            finalizedReason = 'No reason'
+        else:
+            for word in reason:
+                finalizedReason = f'{finalizedReason} {word}'
+
+        async def ban(mem) -> bool:
+            try:
+                await mem.send(f'{owouwu.gen()}, your ban from {ctx.guild.name} has been lifted for reason:{finalizedReason}')
+            except:
+                print(f'Failed to message member {mem.name}')
+                await ctx.send(f'Failed to message member {mem.name}', delete_after=5)
+
+            try:
+                await ctx.guild.unban(mem, reason=finalizedReason)
+                print(f'{mem.name} - {mem.id} was unbanned from {ctx.guild.name} - {ctx.guild.id}')
+                discord_message = {
+                    'User' : mem.name,
+                    'Reason' : finalizedReason,
+                    'Moderator' : ctx.message.author
+                }
+                await send_discord_mod_log_message(messagecontext(ctx.message), mem, discord_message,'Member unbanned')
+            except:
+                print(f'Failed to unban member {mem.name}')
+                await ctx.send(f'Failed to unban member {mem.name}, do I have the correct permission to do so?', delete_after=5)
+                return False
+            return True
+
+        done = False
+        mem = None
+
+        # mentions
+        if ctx.message.mentions:
+            mem = ctx.message.mentions[0]
+        else:
+            # tag
+            if(is_integer(member)):
+                mem = await cfg.bot.fetch_user(int(member))
+
+        # perform
+        if mem != cfg.bot.user:
+            done = await ban(mem)
+        else:
+            await ctx.send(f'But... that\'s me...')
+
+        if not done:
+            return
+
+        await ctx.send(f'{owouwu.gen()}, 1 member unbanned', delete_after=5)
+        print(f'1 member unbanned in {ctx.guild.id} ({ctx.guild.name})')
+        await ctx.message.add_reaction('✅')
+
     @commands.command(name='warn')
     @commands.check(cfg.isguild)
     @commands.check(cfg.hasperms)
